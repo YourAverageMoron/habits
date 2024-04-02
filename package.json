@@ -1,0 +1,31 @@
+{
+  "name": "example-with-tailwindcss",
+  "type": "module",
+  "scripts": {
+    "dev": "vinxi dev",
+    "build": "vinxi build",
+    "start": "vinxi start",
+    "drizzle:generate": "drizzle-kit generate:sqlite --out ./drizzle/migrations --breakpoints --schema=./drizzle/schema.ts",
+    "drizzle:generate:users": "drizzle-kit generate:sqlite --out ./drizzle/migrations-users --breakpoints --schema=./drizzle/user-schema.ts",
+    "drizzle:migrate": "tsx drizzle/migrate"
+  },
+  "dependencies": {
+    "@libsql/client": "^0.5.6",
+    "@solidjs/router": "^0.13.1",
+    "@solidjs/start": "^1.0.0-rc.0",
+    "autoprefixer": "^10.4.14",
+    "axios": "^1.6.8",
+    "drizzle-orm": "^0.29.5",
+    "postcss": "^8.4.26",
+    "solid-js": "^1.8.16",
+    "tailwindcss": "^3.3.3",
+    "vinxi": "^0.3.10"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "devDependencies": {
+    "drizzle-kit": "^0.20.14",
+    "tsx": "^4.7.1"
+  }
+}
