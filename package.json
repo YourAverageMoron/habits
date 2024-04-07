@@ -5,9 +5,11 @@
     "dev": "vinxi dev",
     "build": "vinxi build",
     "start": "vinxi start",
-    "drizzle:generate": "drizzle-kit generate:sqlite --out ./drizzle/migrations --breakpoints --schema=./drizzle/schema.ts",
-    "drizzle:generate:users": "drizzle-kit generate:sqlite --out ./drizzle/migrations-users --breakpoints --schema=./drizzle/user-schema.ts",
-    "drizzle:migrate": "tsx drizzle/migrate"
+    "drizzle:generate:meta": "drizzle-kit generate:sqlite --out ./drizzle/meta-migrations --breakpoints --schema=./drizzle/meta-schemas.ts",
+    "drizzle:generate:schema": "drizzle-kit generate:sqlite --out ./drizzle/schema-migrations --breakpoints --schema=./drizzle/schema-schemas.ts",
+    "drizzle:migrate:meta": "tsx drizzle/meta-migrate",
+    "drizzle:migrate:schema": "tsx drizzle/schema-migrate",
+    "db_create": "tsx src/lib/turso"
   },
   "dependencies": {
     "@libsql/client": "^0.5.6",

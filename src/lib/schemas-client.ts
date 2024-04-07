@@ -1,6 +1,6 @@
 import { drizzle } from 'drizzle-orm/libsql';
 import { createClient } from '@libsql/client/http';
-import * as schema from '../../drizzle/user-schema';
+import * as schema from '../../drizzle/schema-schema';
 
 interface Env {
   url: string;
