@@ -7,7 +7,7 @@ import {
     TabPanel,
     TabPanels,
 } from "@tremor/react";
-import CreateEvent from '@/components/CreateEvent';
+import EventDateTime from '@/components/CreateEvent';
 import Dashboard from '@/components/Dashboard';
 import { redirect } from 'next/navigation';
 
@@ -35,7 +35,7 @@ export default async function Index() {
                         <Dashboard />
                     </TabPanel>
                     <TabPanel>
-                        <CreateEvent />
+                        <EventDateTime />
                     </TabPanel>
                 </TabPanels>
             </TabGroup>
