@@ -6,4 +6,5 @@ export default function TimeInput(props: TextInputProps) {
     }
 
     return <TextInput error={timeValidation()} {...props} />
+
 }
