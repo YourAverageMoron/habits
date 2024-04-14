@@ -35,7 +35,7 @@ export default function TagsGrid() {
     }
     )
 
-    const handleEnterPressed = (event) => {
+    const handleEnterPressed = (event: React.KeyboardEvent) => {
         if (event.key === 'Enter') {
             setTags(
                 {
@@ -63,15 +63,14 @@ export default function TagsGrid() {
 
             <div className="pt-3 grid grid-cols-3 gap-2">
                 {Object.keys(tags).map((tag) => {
-
                     return (
-                        <Button onClick={() => handleTagClicked(tag)} variant={tags[tag].selected ? "primary" : "secondary"} className="">
+                        <Button key={`${tag}`} onClick={() => handleTagClicked(tag)} variant={tags[tag].selected ? "primary" : "secondary"} className="">
                             <p>{tag.charAt(0).toUpperCase() + tag.slice(1)}</p>
                         </Button>
                     )
                 })}
             </div>
-            <TextInput className="mt-3" value={newTag} onValueChange={(value) => setNewTag(value)} onKeyPress={handleEnterPressed} />
+            <TextInput className="mt-3" value={newTag} onValueChange={(value) => setNewTag(value)} onKeyDown={handleEnterPressed} />
         </>
     );
 }
