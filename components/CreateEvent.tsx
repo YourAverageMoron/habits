@@ -4,6 +4,7 @@ import EventDateTime from "./EventDateTime";
 import { RiArrowLeftLine, RiArrowRightLine, RiCheckLine, } from "@remixicon/react";
 import { useState } from "react";
 import { addMinutes, format } from "date-fns";
+import TagsGrid from "./TagsGrid";
 
 export default function CreateEvent() {
 
@@ -23,7 +24,7 @@ export default function CreateEvent() {
             onStartTimeChange={(value) => setStartTime(value)}
             onEndTimeChange={(value) => setEndTime(value)}
         />,
-        <p> Page 2 </p>,
+        <TagsGrid/>,
         <p> Page 3 </p>,
         <p> Page 4 </p>,
         <p> Page 5 </p>,
@@ -41,7 +42,7 @@ export default function CreateEvent() {
     return <>
         <ProgressBar className={"py-6"} value={calculateProgress()} />
         {pages[pageIndex]}
-        <Flex justifyContent={"between"}>
+        <Flex className="mt-6" justifyContent={"between"}>
             <Button disabled={pageIndex == 0} icon={RiArrowLeftLine} iconPosition={"left"} variant={'secondary'} onClick={() => setPageIndex(pageIndex - 1)}>
                 Back
             </Button>

@@ -64,10 +64,10 @@ export default function EventDateTime(props: EventDateTimeProps) {
 
             <Callout className="my-6 h-32" title="Time Summary" icon={RiInformationLine} >
                 {!infoBoxData.error && infoBoxData.data ? <>
-                    <p className="pt-1"><span className={"font-medium"}>Start Time: </span>{infoBoxData.data.startDateTime}</p>
-                    <p className="pt-1"><span className={"font-medium"}>End Time: </span>{infoBoxData.data.endDateTime}</p>
-                    <p className="pt-1"><span className={"font-medium"}>Time Spent: </span>{infoBoxData.data.timeSpent}</p>
-                </> : <p>Please enter valid start and end times using the format - (HH:MM)</p>}
+                    <span className="pt-1"><span className={"font-medium"}>Start Time: </span>{infoBoxData.data.startDateTime}</span>
+                    <span className="pt-1"><span className={"font-medium"}><br />End Time: </span>{infoBoxData.data.endDateTime}</span>
+                    <span className="pt-1"><span className={"font-medium"}><br />Time Spent: </span>{infoBoxData.data.timeSpent}</span>
+                </> : <span>Please enter valid start and end times using the format - (HH:MM)</span>}
             </Callout>
         </>
     );
