@@ -6,6 +6,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@remixicon/react": "^4.2.0",
     "@supabase/ssr": "latest",
     "@supabase/supabase-js": "latest",
     "@tremor/react": "^3.12.1",

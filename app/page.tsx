@@ -1,6 +1,7 @@
 import { createClient } from '@/utils/supabase/server'
 import { cookies } from 'next/headers'
 import {
+    Card,
     Tab,
     TabGroup,
     TabList,
@@ -24,22 +25,23 @@ export default async function Index() {
     }
 
     return (
-        <main>
-            <TabGroup className="p-6">
-                <TabList>
-                    <Tab>Dashboard</Tab>
-                    <Tab>New Event</Tab>
-                </TabList>
-                <TabPanels>
-                    <TabPanel>
-                        <Dashboard />
-                    </TabPanel>
-                    <TabPanel>
-                        <EventDateTime />
-                    </TabPanel>
-                </TabPanels>
-            </TabGroup>
-
+        <main className="min-h-screen flex justify-center bg-fuchsia-50">
+            <Card className="max-w-screen-lg md:my-6 md:mx-6">
+                <TabGroup className="p-6">
+                    <TabList>
+                        <Tab>Dashboard</Tab>
+                        <Tab>New Event</Tab>
+                    </TabList>
+                    <TabPanels>
+                        <TabPanel>
+                            <Dashboard />
+                        </TabPanel>
+                        <TabPanel>
+                            <EventDateTime />
+                        </TabPanel>
+                    </TabPanels>
+                </TabGroup>
+            </Card>
         </main >
     )
 }

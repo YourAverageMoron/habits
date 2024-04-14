@@ -43,6 +43,7 @@ module.exports = {
                         strong: colors.gray[900],
                         inverted: colors.white,
                     },
+
                 },
                 // dark mode
                 'dark-tremor': {
