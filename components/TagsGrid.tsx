@@ -1,45 +1,31 @@
-import { RiCalendarScheduleLine, } from "@remixicon/react";
 import { Button, TextInput } from "@tremor/react";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 
-type Tags = {
+export type TagsGridData = {
     [key: string]: {
         selected: boolean,
     }
 };
 
+type TypeGridProps = {
+    title: string;
+    value: TagsGridData;
+    setValue: Dispatch<SetStateAction<TagsGridData>>;
+};
 
-export default function TagsGrid() {
+
+export const getSelectedTags = (tags: TagsGridData): string[] => Object.keys(tags).filter(key => tags[key].selected);
+
+
+export function TagsGrid(props: TypeGridProps) {
 
     const [newTag, setNewTag] = useState<string>("");
 
-    const [tags, setTags] = useState<Tags>({
-        head: {
-            selected: true,
-        },
-        shoulders: {
-            selected: false,
-        },
-        knees: {
-            selected: true,
-        },
-        toes: {
-            selected: false,
-        },
-        legs: {
-            selected: false,
-        },
-        arms: {
-            selected: false,
-        },
-    }
-    )
-
     const handleEnterPressed = (event: React.KeyboardEvent) => {
         if (event.key === 'Enter') {
-            setTags(
+            props.setValue(
                 {
-                    ...tags,
+                    ...props.value,
                     [newTag.toLowerCase()]: { selected: true }
                 }
             );
@@ -48,23 +34,18 @@ export default function TagsGrid() {
     }
 
     const handleTagClicked = (tag: string) => {
-        const newTagsObject = { ...tags };
+        const newTagsObject = { ...props.value };
         newTagsObject[tag].selected = !newTagsObject[tag].selected;
-        setTags(newTagsObject);
+        props.setValue(newTagsObject);
     }
 
     return (
         <>
-            <div className="flex justify-start gap-1 items-center">
-                <RiCalendarScheduleLine />
-                <p className="text-3xl text-tremor-content-strong dark:text-dark-tremor-content-strong font-semibold">A name here</p>
-            </div>
-            <p className="pt-3 text-tremor-default text-tremor-content dark:text-dark-tremor-content">Some description here</p>
-
+            <p className="text-3xl text-tremor-content-strong dark:text-dark-tremor-content-strong font-semibold">{props.title}</p>
             <div className="pt-3 grid grid-cols-3 gap-2">
-                {Object.keys(tags).map((tag) => {
+                {Object.keys(props.value).map((tag) => {
                     return (
-                        <Button key={`${tag}`} onClick={() => handleTagClicked(tag)} variant={tags[tag].selected ? "primary" : "secondary"} className="">
+                        <Button key={`${tag}`} onClick={() => handleTagClicked(tag)} variant={props.value[tag].selected ? "primary" : "secondary"} className="">
                             <p>{tag.charAt(0).toUpperCase() + tag.slice(1)}</p>
                         </Button>
                     )
