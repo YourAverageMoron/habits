@@ -8,7 +8,7 @@ import {
     TabPanel,
     TabPanels,
 } from "@tremor/react";
-import EventDateTime from '@/components/CreateEvent';
+import CreateEvent from '@/components/CreateEvent';
 import Dashboard from '@/components/Dashboard';
 import { redirect } from 'next/navigation';
 
@@ -26,8 +26,8 @@ export default async function Index() {
 
     return (
         <main className="min-h-screen flex justify-center bg-fuchsia-50">
-            <Card className="max-w-screen-lg md:my-6 md:mx-6">
-                <TabGroup className="p-6">
+            <Card className="max-w-screen-lg md:my-6 md:mx-6 relative">
+                <TabGroup className="h-full p-6">
                     <TabList>
                         <Tab>Dashboard</Tab>
                         <Tab>New Event</Tab>
@@ -36,8 +36,8 @@ export default async function Index() {
                         <TabPanel>
                             <Dashboard />
                         </TabPanel>
-                        <TabPanel>
-                            <EventDateTime />
+                        <TabPanel className="">
+                            <CreateEvent />
                         </TabPanel>
                     </TabPanels>
                 </TabGroup>
