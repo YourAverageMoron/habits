@@ -4,43 +4,37 @@ import EventDateTime from "./EventDateTime";
 import { RiArrowLeftLine, RiArrowRightLine, RiCheckLine, } from "@remixicon/react";
 import { useState } from "react";
 import { addMinutes, format } from "date-fns";
-import { TagsGrid, TagsGridData, getSelectedTags } from "./TagsGrid";
+import { TagsGrid, TagsGridData } from "./TagsGrid";
 import Journal from "./Journal";
 
-export default function CreateEvent() {
+
+type TagCategories = {
+    id: number;
+    name: string;
+    category_index: number | null;
+}
+
+type CreateEventProps = {
+    tagsCategories: TagCategories[] | null
+}
+
+
+type Tags = {
+    [key: number]: TagsGridData;
+}
+
+
+export default function CreateEvent(props: CreateEventProps) {
 
     const [pageIndex, setPageIndex] = useState<number>(0);
-
     const [startDate, setStartDate] = useState<Date>(new Date())
     const [startTime, setStartTime] = useState<string>(format(addMinutes(startDate, -5), "HH:mm"));
     const [endTime, setEndTime] = useState<string>(format(startDate, "HH:mm"));
-
-    const [areasAffectedTags, setAreasAffectedTags] = useState<TagsGridData>({});
-    const [moodTags, setMoodTags] = useState<TagsGridData>({});
-    const [situationTags, setSituationTags] = useState<TagsGridData>({});
-    const [locationTags, setLocationTags] = useState<TagsGridData>({});
-    const [otherTags, setOtherTags] = useState<TagsGridData>({});
-
+    const [tagsCategories, setTagsCategories] = useState<Tags>(props.tagsCategories?.reduce((acc, cur) => { return { ...acc, ...{ [cur.id]: {} } } }, {}) || {});
     const [journalValue, setJournalValue] = useState<string>("");
 
-    const pages = [
-        <EventDateTime
-            startDate={startDate}
-            startTime={startTime}
-            endTime={endTime}
-            onStartDateChange={(value) => setStartDate(value)}
-            onStartTimeChange={(value) => setStartTime(value)}
-            onEndTimeChange={(value) => setEndTime(value)}
-        />,
-        <TagsGrid title={"Areas Affected"} value={areasAffectedTags} setValue={setAreasAffectedTags} />,
-        <TagsGrid title={"Mood"} value={moodTags} setValue={setMoodTags} />,
-        <TagsGrid title={"Situation"} value={situationTags} setValue={setSituationTags} />,
-        <TagsGrid title={"Location"} value={locationTags} setValue={setLocationTags} />,
-        <TagsGrid title={"Other"} value={otherTags} setValue={setOtherTags} />,
-        <Journal value={journalValue} onValueChange={(value) => setJournalValue(value)} />
-    ]
 
-    const calculateProgress = () => {
+    const calculateProgress = (pages: any[]) => {
         return (pageIndex) / (pages.length - 1) * 100;
     }
 
@@ -58,13 +52,32 @@ export default function CreateEvent() {
         }
     }
 
-    const submitEvent = () => {
-        console.log(getStartAndEndDateTimes());
-        console.log(getSelectedTags(moodTags));
+    const updateTagCategories = (catagoryId: number, value: TagsGridData) => {
+        setTagsCategories({ ...tagsCategories, ...{ [catagoryId]: value } });
     }
 
+    const submitEvent = () => {
+        console.log(getStartAndEndDateTimes());
+        console.log(tagsCategories);
+    }
+
+    const tagsPages = props.tagsCategories?.map(tagCategory => <TagsGrid key={tagCategory.id} title={tagCategory.name} value={tagsCategories[tagCategory.id]} onValueChange={(value) => updateTagCategories(tagCategory.id, value)} />) || [];
+    const pages = [
+        <EventDateTime
+            startDate={startDate}
+            startTime={startTime}
+            endTime={endTime}
+            onStartDateChange={(value) => setStartDate(value)}
+            onStartTimeChange={(value) => setStartTime(value)}
+            onEndTimeChange={(value) => setEndTime(value)}
+        />,
+        ...tagsPages,
+        <Journal value={journalValue} onValueChange={(value) => setJournalValue(value)} />
+    ]
+
+
     return <div className="h-full">
-        <ProgressBar className={"py-6"} value={calculateProgress()} />
+        <ProgressBar className={"py-6"} value={calculateProgress(pages)} />
         <div className="mb-16">
             {pages[pageIndex]}
         </div>

@@ -14,8 +14,8 @@ import { redirect } from 'next/navigation';
 
 
 export default async function Index() {
-    const cookieStore = cookies()
-    const supabase = createClient(cookieStore)
+    const cookieStore = cookies();
+    const supabase = createClient(cookieStore);
     const {
         data: { user },
     } = await supabase.auth.getUser();
@@ -24,6 +24,11 @@ export default async function Index() {
         redirect("/login");
     }
 
+    let { data, error } = await supabase
+        .from('event_tag_categories')
+        .select('id, name, category_index')
+    
+    if (data){
     return (
         <main className="min-h-screen flex justify-center bg-fuchsia-50">
             <Card className="max-w-screen-lg md:my-6 md:mx-6 relative">
@@ -37,11 +42,19 @@ export default async function Index() {
                             <Dashboard />
                         </TabPanel>
                         <TabPanel className="">
-                            <CreateEvent />
+                            <CreateEvent tagsCategories={data} />
                         </TabPanel>
                     </TabPanels>
                 </TabGroup>
             </Card>
         </main >
+    )};
+    return (
+        <main className="min-h-screen flex justify-center bg-fuchsia-50">
+            <Card className="max-w-screen-lg md:my-6 md:mx-6 relative">
+            </Card>
+        </main >
+
     )
+    
 }

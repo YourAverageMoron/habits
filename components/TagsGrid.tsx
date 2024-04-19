@@ -1,5 +1,5 @@
 import { Button, TextInput } from "@tremor/react";
-import { Dispatch, SetStateAction, useState } from "react";
+import { useEffect, useState } from "react";
 
 export type TagsGridData = {
     [key: string]: {
@@ -10,7 +10,7 @@ export type TagsGridData = {
 type TypeGridProps = {
     title: string;
     value: TagsGridData;
-    setValue: Dispatch<SetStateAction<TagsGridData>>;
+    onValueChange: ((value: TagsGridData) => void);
 };
 
 
@@ -20,32 +20,32 @@ export const getSelectedTags = (tags: TagsGridData): string[] => Object.keys(tag
 export function TagsGrid(props: TypeGridProps) {
 
     const [newTag, setNewTag] = useState<string>("");
+    const [tags, setTags] = useState<TagsGridData>(props.value);
+
+    useEffect(() => props.onValueChange(tags), [tags]);
 
     const handleEnterPressed = (event: React.KeyboardEvent) => {
         if (event.key === 'Enter') {
-            props.setValue(
-                {
-                    ...props.value,
-                    [newTag.toLowerCase()]: { selected: true }
-                }
-            );
+            setTags({ ...tags, [newTag.toLowerCase()]: { selected: true } });
             setNewTag("");
+
+            props.onValueChange({ ...tags, [newTag.toLowerCase()]: { selected: true } })
         }
     }
 
     const handleTagClicked = (tag: string) => {
         const newTagsObject = { ...props.value };
         newTagsObject[tag].selected = !newTagsObject[tag].selected;
-        props.setValue(newTagsObject);
+        setTags(newTagsObject);
     }
 
     return (
         <>
             <p className="text-3xl text-tremor-content-strong dark:text-dark-tremor-content-strong font-semibold">{props.title}</p>
             <div className="pt-3 grid grid-cols-3 gap-2">
-                {Object.keys(props.value).map((tag) => {
+                {Object.keys(tags).map((tag) => {
                     return (
-                        <Button key={`${tag}`} onClick={() => handleTagClicked(tag)} variant={props.value[tag].selected ? "primary" : "secondary"} className="">
+                        <Button key={`${tag}`} onClick={() => handleTagClicked(tag)} variant={tags[tag].selected ? "primary" : "secondary"} className="">
                             <p>{tag.charAt(0).toUpperCase() + tag.slice(1)}</p>
                         </Button>
                     )
