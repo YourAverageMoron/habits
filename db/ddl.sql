@@ -22,6 +22,7 @@ CREATE UNIQUE INDEX ON events(id);
 	id serial primary key,
 	user_id uuid default auth.uid(),
 	name text NOT NULL,
+	category_index integer,
 	created_at timestamp DEFAULT now(),
 	updated_at timestamp DEFAULT now()
 );
@@ -32,7 +33,7 @@ CREATE POLICY user_access_event_tag_categories ON event_tag_categories
     USING ((select auth.uid()) = user_id);
 
 CREATE UNIQUE INDEX ON event_tag_categories(id);
-
+CREATE INDEX ON event_tag_categories(category_index);
 ---
 
  CREATE TABLE event_tags (
@@ -52,5 +53,4 @@ CREATE POLICY user_access_event_tags ON event_tags
 
 CREATE UNIQUE INDEX ON event_tags(id);
 CREATE INDEX ON event_tags(category_id);
-
 
