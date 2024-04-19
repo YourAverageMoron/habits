@@ -1,5 +1,5 @@
 "use client"
-import { Callout, DatePicker } from "@tremor/react";
+import { Callout, DatePicker, NumberInput } from "@tremor/react";
 import TimeInput from "./TimeInput";
 import { addDays, differenceInMinutes, format } from "date-fns";
 import { RiCalendarScheduleLine, RiInformationLine } from "@remixicon/react";
@@ -12,9 +12,13 @@ type EventDateTimeProps = {
     onStartTimeChange: (value: string) => void;
     endTime: string;
     onEndTimeChange: (value: string) => void;
+
+
+    intensity: number;
+    onIntensityChange: (value: number) => void;
 }
 
-export default function EventDateTime(props: EventDateTimeProps) {
+export default function EventDateTimeAndIntensity(props: EventDateTimeProps) {
 
 
     const calculateInfoBox = () => {
@@ -22,9 +26,9 @@ export default function EventDateTime(props: EventDateTimeProps) {
             const startSplit = props.startTime.split(':');
             const endSplit = props.endTime.split(':');
             const startDateTime = new Date(props.startDate.getTime());;
-            startDateTime.setHours(parseInt(startSplit[0]), parseInt(startSplit[1]), 0, 0);
+            startDateTime.setHours(Number(startSplit[0]), Number(startSplit[1]), 0, 0);
             let endDateTime = new Date(props.startDate.getTime());;
-            endDateTime.setHours(parseInt(endSplit[0]), parseInt(endSplit[1]), 0, 0);
+            endDateTime.setHours(Number(endSplit[0]), Number(endSplit[1]), 0, 0);
 
             if (endDateTime < startDateTime) {
                 endDateTime = addDays(endDateTime, 1);
@@ -61,6 +65,9 @@ export default function EventDateTime(props: EventDateTimeProps) {
             <TimeInput value={props.startTime} onValueChange={props.onStartTimeChange} />
             <p className="pt-3 text-tremor-default text-tremor-content dark:text-dark-tremor-content">End Time:</p>
             <TimeInput value={props.endTime} onValueChange={props.onEndTimeChange} />
+
+            <p className="pt-3 text-tremor-default text-tremor-content dark:text-dark-tremor-content">Intensity:</p>
+            <NumberInput min={1} max={5} value={props.intensity} onValueChange={props.onIntensityChange} />
 
             <Callout className="my-6 h-32" title="Time Summary" icon={RiInformationLine} >
                 {!infoBoxData.error && infoBoxData.data ? <>

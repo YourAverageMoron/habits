@@ -84,31 +84,31 @@ export type Database = {
       events: {
         Row: {
           created_at: string | null
-          end_time: number
+          end_time: string
           id: number
           intesity: number
           notes: string | null
-          start_time: number
+          start_time: string
           updated_at: string | null
           user_id: string | null
         }
         Insert: {
           created_at?: string | null
-          end_time: number
+          end_time: string
           id?: number
           intesity: number
           notes?: string | null
-          start_time: number
+          start_time: string
           updated_at?: string | null
           user_id?: string | null
         }
         Update: {
           created_at?: string | null
-          end_time?: number
+          end_time?: string
           id?: number
           intesity?: number
           notes?: string | null
-          start_time?: number
+          start_time?: string
           updated_at?: string | null
           user_id?: string | null
         }

@@ -1,11 +1,12 @@
 "use client"
 import { Button, Flex, ProgressBar } from "@tremor/react";
-import EventDateTime from "./EventDateTime";
+import EventDateTimeAndIntensity from "./EventDateTimeAndIntensity";
 import { RiArrowLeftLine, RiArrowRightLine, RiCheckLine, } from "@remixicon/react";
 import { useState } from "react";
 import { addMinutes, format } from "date-fns";
 import { TagsGrid, TagsGridData } from "./TagsGrid";
 import Journal from "./Journal";
+import { createClient } from "@/utils/supabase/client";
 
 
 type TagCategories = {
@@ -25,11 +26,12 @@ type Tags = {
 
 
 export default function CreateEvent(props: CreateEventProps) {
-
+    const supabase = createClient();
     const [pageIndex, setPageIndex] = useState<number>(0);
     const [startDate, setStartDate] = useState<Date>(new Date())
     const [startTime, setStartTime] = useState<string>(format(addMinutes(startDate, -5), "HH:mm"));
     const [endTime, setEndTime] = useState<string>(format(startDate, "HH:mm"));
+    const [intensity, setIntensity] = useState<number>(1);
     const [tagsCategories, setTagsCategories] = useState<Tags>(props.tagsCategories?.reduce((acc, cur) => { return { ...acc, ...{ [cur.id]: {} } } }, {}) || {});
     const [journalValue, setJournalValue] = useState<string>("");
 
@@ -56,20 +58,45 @@ export default function CreateEvent(props: CreateEventProps) {
         setTagsCategories({ ...tagsCategories, ...{ [catagoryId]: value } });
     }
 
-    const submitEvent = () => {
-        console.log(getStartAndEndDateTimes());
-        console.log(tagsCategories);
+    const submitEvent = async () => {
+        const dates = getStartAndEndDateTimes();
+        const { data, error } = await supabase
+            .from('events')
+            .insert([
+                { start_time: dates.startDateTime.toISOString(), end_time: dates.endDateTime.toISOString(), intesity: intensity, notes: journalValue },
+            ])
+            .select();
+
+        const selectedTags = [];
+        for (const [stringCategoryId, categoryValue] of Object.entries(tagsCategories)) {
+            let categoryId = Number(stringCategoryId);
+            for (let [tagDataKey, tagDataValue] of Object.entries(categoryValue)) {
+                if (tagDataValue.selected) {
+                    selectedTags.push({
+                        category_id: categoryId,
+                        event_id: data[0].id,
+                        value: tagDataKey,
+                    });
+                }
+            }
+        }
+        await supabase
+            .from('event_tags')
+            .insert(selectedTags);
+        window.location.reload();
     }
 
     const tagsPages = props.tagsCategories?.map(tagCategory => <TagsGrid key={tagCategory.id} title={tagCategory.name} value={tagsCategories[tagCategory.id]} onValueChange={(value) => updateTagCategories(tagCategory.id, value)} />) || [];
     const pages = [
-        <EventDateTime
+        <EventDateTimeAndIntensity
             startDate={startDate}
             startTime={startTime}
             endTime={endTime}
+            intensity={intensity}
             onStartDateChange={(value) => setStartDate(value)}
             onStartTimeChange={(value) => setStartTime(value)}
             onEndTimeChange={(value) => setEndTime(value)}
+            onIntensityChange={(value) => setIntensity(value)}
         />,
         ...tagsPages,
         <Journal value={journalValue} onValueChange={(value) => setJournalValue(value)} />
