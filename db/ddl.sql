@@ -5,7 +5,7 @@ CREATE TABLE events (
         start_time timestamp NOT NULL,
         end_time timestamp NOT NULL,
         intesity integer NOT NULL,
-        notes text,
+        journal text,
         created_at timestamp DEFAULT now(),
         updated_at timestamp DEFAULT now()
 );

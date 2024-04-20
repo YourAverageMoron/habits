@@ -63,7 +63,7 @@ export default function CreateEvent(props: CreateEventProps) {
         const { data, error } = await supabase
             .from('events')
             .insert([
-                { start_time: dates.startDateTime.toISOString(), end_time: dates.endDateTime.toISOString(), intesity: intensity, notes: journalValue },
+                { start_time: dates.startDateTime.toISOString(), end_time: dates.endDateTime.toISOString(), intesity: intensity, journal: journalValue },
             ])
             .select();
 

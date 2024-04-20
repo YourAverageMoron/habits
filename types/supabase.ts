@@ -87,7 +87,7 @@ export type Database = {
           end_time: string
           id: number
           intesity: number
-          notes: string | null
+          journal: string | null
           start_time: string
           updated_at: string | null
           user_id: string | null
@@ -97,7 +97,7 @@ export type Database = {
           end_time: string
           id?: number
           intesity: number
-          notes?: string | null
+          journal?: string | null
           start_time: string
           updated_at?: string | null
           user_id?: string | null
@@ -107,7 +107,7 @@ export type Database = {
           end_time?: string
           id?: number
           intesity?: number
-          notes?: string | null
+          journal?: string | null
           start_time?: string
           updated_at?: string | null
           user_id?: string | null
