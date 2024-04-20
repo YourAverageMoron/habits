@@ -60,13 +60,18 @@ export default function CreateEvent(props: CreateEventProps) {
 
     const submitEvent = async () => {
         const dates = getStartAndEndDateTimes();
+        // TODO this should be handled in one transaction, might need a CTE or a postgres function
         const { data, error } = await supabase
             .from('events')
             .insert([
                 { start_time: dates.startDateTime.toISOString(), end_time: dates.endDateTime.toISOString(), intesity: intensity, journal: journalValue },
             ])
             .select();
-
+        if (!data || error) {
+            alert("Something went wront - unable to submit event");
+            window.location.reload();
+            return;
+        }
         const selectedTags = [];
         for (const [stringCategoryId, categoryValue] of Object.entries(tagsCategories)) {
             let categoryId = Number(stringCategoryId);
