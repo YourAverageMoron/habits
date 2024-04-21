@@ -8,6 +8,7 @@ import { TagsGrid, TagsGridData } from "./TagsGrid";
 import Journal from "./Journal";
 import { createClient } from "@/utils/supabase/client";
 import { timeValidation } from "./TimeInput";
+import assert, { AssertionError } from "assert";
 
 
 type TagCategories = {
@@ -29,9 +30,9 @@ type Tags = {
 export default function CreateEvent(props: CreateEventProps) {
     const supabase = createClient();
     const [pageIndex, setPageIndex] = useState<number>(0);
-    const [startDate, setStartDate] = useState<Date>(new Date())
-    const [startTime, setStartTime] = useState<string>(format(addMinutes(startDate, -5), "HH:mm"));
-    const [endTime, setEndTime] = useState<string>(format(startDate, "HH:mm"));
+    const [startDate, setStartDate] = useState<Date | undefined>(new Date())
+    const [startTime, setStartTime] = useState<string>(format(addMinutes(startDate ? startDate : new Date(), -5), "HH:mm"));
+    const [endTime, setEndTime] = useState<string>(format(startDate ? startDate : new Date(), "HH:mm"));
     const [intensity, setIntensity] = useState<number>(1);
     const [tagsCategories, setTagsCategories] = useState<Tags>(props.tagsCategories?.reduce((acc, cur) => { return { ...acc, ...{ [cur.id]: {} } } }, {}) || {});
     const [journalValue, setJournalValue] = useState<string>("");
@@ -40,11 +41,12 @@ export default function CreateEvent(props: CreateEventProps) {
         return (pageIndex) / (pages.length - 1) * 100;
     }
 
-    const validateData = () =>{
-       return timeValidation(startTime) || timeValidation(endTime) || !intensity; 
+    const validateData = () => {
+        return timeValidation(startTime) || timeValidation(endTime) || !intensity;
     }
 
     const getStartAndEndDateTimes = () => {
+        assert(startDate != undefined);
         const startSplit = startTime.split(':');
         const endSplit = endTime.split(':');
         const startDateTime = new Date(startDate.getTime());;

@@ -3,11 +3,12 @@ import { Callout, DatePicker, NumberInput } from "@tremor/react";
 import { TimeInput } from "./TimeInput";
 import { addDays, differenceInMinutes, format } from "date-fns";
 import { RiCalendarScheduleLine, RiInformationLine } from "@remixicon/react";
+import assert from "assert";
 
 
 type EventDateTimeAndIntensityProps = {
-    startDate: Date,
-    onStartDateChange: (value: Date) => void;
+    startDate: Date | undefined,
+    onStartDateChange: (value: Date | undefined) => void;
     startTime: string;
     onStartTimeChange: (value: string) => void;
     endTime: string;
@@ -19,6 +20,7 @@ type EventDateTimeAndIntensityProps = {
 export default function EventDateTimeAndIntensity(props: EventDateTimeAndIntensityProps) {
     const calculateInfoBox = () => {
         try {
+            assert(props.startDate != undefined);
             const startSplit = props.startTime.split(':');
             const endSplit = props.endTime.split(':');
             const startDateTime = new Date(props.startDate.getTime());;
@@ -69,7 +71,7 @@ export default function EventDateTimeAndIntensity(props: EventDateTimeAndIntensi
                     <span className="pt-1"><span className={"font-medium"}>Start Time: </span>{infoBoxData.data.startDateTime}</span>
                     <span className="pt-1"><span className={"font-medium"}><br />End Time: </span>{infoBoxData.data.endDateTime}</span>
                     <span className="pt-1"><span className={"font-medium"}><br />Time Spent: </span>{infoBoxData.data.timeSpent}</span>
-                </> : <span>Please enter valid start and end times using the format - (HH:MM)</span>}
+                </> : <span>Please enter valid date and start/end times using the format - (HH:MM)</span>}
             </Callout>
         </>
     );
