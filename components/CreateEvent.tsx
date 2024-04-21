@@ -7,6 +7,7 @@ import { addMinutes, format } from "date-fns";
 import { TagsGrid, TagsGridData } from "./TagsGrid";
 import Journal from "./Journal";
 import { createClient } from "@/utils/supabase/client";
+import { timeValidation } from "./TimeInput";
 
 
 type TagCategories = {
@@ -35,9 +36,12 @@ export default function CreateEvent(props: CreateEventProps) {
     const [tagsCategories, setTagsCategories] = useState<Tags>(props.tagsCategories?.reduce((acc, cur) => { return { ...acc, ...{ [cur.id]: {} } } }, {}) || {});
     const [journalValue, setJournalValue] = useState<string>("");
 
-
     const calculateProgress = (pages: any[]) => {
         return (pageIndex) / (pages.length - 1) * 100;
+    }
+
+    const validateData = () =>{
+       return timeValidation(startTime) || timeValidation(endTime) || !intensity; 
     }
 
     const getStartAndEndDateTimes = () => {
@@ -118,11 +122,11 @@ export default function CreateEvent(props: CreateEventProps) {
                 Back
             </Button>
             {pageIndex == pages.length - 1 ?
-                <Button icon={RiCheckLine} iconPosition={"right"} variant={'primary'} onClick={() => submitEvent()}>
+                <Button disabled={validateData()} icon={RiCheckLine} iconPosition={"right"} variant={'primary'} onClick={() => submitEvent()}>
                     Submit
                 </Button>
                 :
-                <Button icon={RiArrowRightLine} iconPosition={"right"} variant={'primary'} onClick={() => setPageIndex(pageIndex + 1)}>
+                <Button disabled={validateData()} icon={RiArrowRightLine} iconPosition={"right"} variant={'primary'} onClick={() => setPageIndex(pageIndex + 1)}>
                     Next
                 </Button>
             }

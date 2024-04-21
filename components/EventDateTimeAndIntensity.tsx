@@ -1,26 +1,22 @@
 "use client"
 import { Callout, DatePicker, NumberInput } from "@tremor/react";
-import TimeInput from "./TimeInput";
+import { TimeInput } from "./TimeInput";
 import { addDays, differenceInMinutes, format } from "date-fns";
 import { RiCalendarScheduleLine, RiInformationLine } from "@remixicon/react";
 
 
-type EventDateTimeProps = {
+type EventDateTimeAndIntensityProps = {
     startDate: Date,
     onStartDateChange: (value: Date) => void;
     startTime: string;
     onStartTimeChange: (value: string) => void;
     endTime: string;
     onEndTimeChange: (value: string) => void;
-
-
     intensity: number;
     onIntensityChange: (value: number) => void;
 }
 
-export default function EventDateTimeAndIntensity(props: EventDateTimeProps) {
-
-
+export default function EventDateTimeAndIntensity(props: EventDateTimeAndIntensityProps) {
     const calculateInfoBox = () => {
         try {
             const startSplit = props.startTime.split(':');
@@ -33,7 +29,6 @@ export default function EventDateTimeAndIntensity(props: EventDateTimeProps) {
             if (endDateTime < startDateTime) {
                 endDateTime = addDays(endDateTime, 1);
             }
-
 
             return {
                 data: {
@@ -67,7 +62,7 @@ export default function EventDateTimeAndIntensity(props: EventDateTimeProps) {
             <TimeInput value={props.endTime} onValueChange={props.onEndTimeChange} />
 
             <p className="pt-3 text-tremor-default text-tremor-content dark:text-dark-tremor-content">Intensity:</p>
-            <NumberInput min={1} max={5} value={props.intensity} onValueChange={props.onIntensityChange} />
+            <NumberInput error={!props.intensity} min={1} max={5} value={props.intensity} onValueChange={props.onIntensityChange} />
 
             <Callout className="my-6 h-32" title="Time Summary" icon={RiInformationLine} >
                 {!infoBoxData.error && infoBoxData.data ? <>
