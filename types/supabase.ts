@@ -119,7 +119,16 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      total_time_over_days: {
+        Args: {
+          n: unknown
+        }
+        Returns: {
+          start_date: string
+          count: number
+          sum: string
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never
