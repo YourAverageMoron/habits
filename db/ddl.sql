@@ -61,3 +61,20 @@ CREATE POLICY user_access_event_tags ON event_tags
 
 CREATE UNIQUE INDEX ON event_tags(id);
 CREATE INDEX ON event_tags(category_id);
+
+
+
+---
+
+
+create or replace function total_time_over_days(n interval)
+returns TABLE (start_date date, count numeric, sum text)
+language sql
+as $$
+
+  select date(start_time) as start_date,  count(*), (sum(end_time - start_time))::TEXT from events
+  WHERE start_time > current_date - total_time_over_days.n
+  group by start_date
+  order by start_date asc;
+$$;
+
