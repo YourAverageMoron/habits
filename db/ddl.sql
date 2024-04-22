@@ -78,3 +78,12 @@ as $$
   order by start_date asc;
 $$;
 
+
+create or replace function get_tag_values(categories numeric[])
+returns TABLE (category_id numeric, value text)
+language sql
+as $$
+select category_id, value from event_tags 
+where category_id = ANY(get_tag_values.categories)
+group by category_id, value;
+$$;

@@ -1,26 +1,20 @@
 import { Button, TextInput } from "@tremor/react";
 import { useEffect, useState } from "react";
 
-export type TagsGridData = {
-    [key: string]: {
-        selected: boolean,
-    }
-};
-
 type TypeGridProps = {
     title: string;
-    value: TagsGridData;
-    onValueChange: ((value: TagsGridData) => void);
+    value: Tags;
+    onValueChange: ((value: Tags) => void);
 };
 
 
-export const getSelectedTags = (tags: TagsGridData): string[] => Object.keys(tags).filter(key => tags[key].selected);
+export const getSelectedTags = (tags: Tags): string[] => Object.keys(tags).filter(key => tags[key].selected);
 
 
 export function TagsGrid(props: TypeGridProps) {
 
     const [newTag, setNewTag] = useState<string>("");
-    const [tags, setTags] = useState<TagsGridData>(props.value);
+    const [tags, setTags] = useState<Tags>(props.value);
 
     useEffect(() => props.onValueChange(tags), [tags]);
 

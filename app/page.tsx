@@ -11,6 +11,36 @@ import {
 import CreateEvent from '@/components/CreateEvent';
 import Dashboard from '@/components/Dashboard';
 import { redirect } from 'next/navigation';
+import { SupabaseClient } from '@supabase/supabase-js';
+import { Database } from '@/types/supabase';
+
+
+async function createEventCategories(supabase: SupabaseClient<Database>) {
+    let categories = await supabase
+        .from('event_tag_categories')
+        .select('id, name, category_index');
+
+    if (!categories.data || categories.error) {
+        //TODO throw an error or something 
+        return;
+    }
+    let tags = await supabase.rpc('get_tag_values', {
+        categories: categories.data.map(category => category.id)
+    })
+    const categoriesMap: Categories = categories.data.reduce((acc: Categories, cur) => {
+        return {
+            ...acc, ...{
+                [cur.id]: {
+                    index: cur.category_index,
+                    name: cur.name,
+                    tags: {}
+                }
+            }
+        }
+    }, {}) || {}
+    tags.data?.forEach(tag => categoriesMap[tag.category_id].tags[tag.value] = { selected: false });
+    return categoriesMap;
+}
 
 
 export default async function Index() {
@@ -24,9 +54,7 @@ export default async function Index() {
         redirect("/login");
     }
 
-    let { data, error } = await supabase
-        .from('event_tag_categories')
-        .select('id, name, category_index')
+    const data = await createEventCategories(supabase);
 
     if (data) {
         return (
@@ -42,7 +70,7 @@ export default async function Index() {
                                 <Dashboard />
                             </TabPanel>
                             <TabPanel className="">
-                                <CreateEvent tagsCategories={data} />
+                                <CreateEvent categories={data} />
                             </TabPanel>
                         </TabPanels>
                     </TabGroup>
