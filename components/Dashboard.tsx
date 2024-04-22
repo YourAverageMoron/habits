@@ -32,9 +32,7 @@ async function createLastNDaysData(n: number, supabase: SupabaseClient<Database>
     const resultArr: LineChartData[] = [];
 
     for (let i = 0; i <= n; i++) {
-        console.log(-n + i);
         let date = addDays(new Date(), (-n + i));
-        console.log(date);
         let formattedDate = format(date, 'yyyy-MM-dd');
         resultArr.push({
             date: format(date, 'do LLL'),
@@ -42,8 +40,6 @@ async function createLastNDaysData(n: number, supabase: SupabaseClient<Database>
             totalTime: dataJson[formattedDate]?.totalTime || 0,
         });
     }
-
-    console.log(resultArr);
     return resultArr;
 }
 

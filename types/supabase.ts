@@ -119,6 +119,15 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_tag_values: {
+        Args: {
+          categories: number[]
+        }
+        Returns: {
+          category_id: number
+          value: string
+        }[]
+      }
       total_time_over_days: {
         Args: {
           n: unknown

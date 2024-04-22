@@ -4,26 +4,15 @@ import EventDateTimeAndIntensity from "./EventDateTimeAndIntensity";
 import { RiArrowLeftLine, RiArrowRightLine, RiCheckLine, } from "@remixicon/react";
 import { useState } from "react";
 import { addMinutes, format } from "date-fns";
-import { TagsGrid, TagsGridData } from "./TagsGrid";
+import { TagsGrid } from "./TagsGrid";
 import Journal from "./Journal";
 import { createClient } from "@/utils/supabase/client";
 import { timeValidation } from "./TimeInput";
-import assert, { AssertionError } from "assert";
+import assert from "assert";
 
-
-type TagCategories = {
-    id: number;
-    name: string;
-    category_index: number | null;
-}
 
 type CreateEventProps = {
-    tagsCategories: TagCategories[] | null
-}
-
-
-type Tags = {
-    [key: number]: TagsGridData;
+    categories: Categories
 }
 
 
@@ -34,7 +23,7 @@ export default function CreateEvent(props: CreateEventProps) {
     const [startTime, setStartTime] = useState<string>(format(addMinutes(startDate ? startDate : new Date(), -5), "HH:mm"));
     const [endTime, setEndTime] = useState<string>(format(startDate ? startDate : new Date(), "HH:mm"));
     const [intensity, setIntensity] = useState<number>(1);
-    const [tagsCategories, setTagsCategories] = useState<Tags>(props.tagsCategories?.reduce((acc, cur) => { return { ...acc, ...{ [cur.id]: {} } } }, {}) || {});
+    const [tagsCategories, setTagsCategories] = useState<Categories>(props.categories || {});
     const [journalValue, setJournalValue] = useState<string>("");
 
     const calculateProgress = (pages: any[]) => {
@@ -60,8 +49,10 @@ export default function CreateEvent(props: CreateEventProps) {
         }
     }
 
-    const updateTagCategories = (catagoryId: number, value: TagsGridData) => {
-        setTagsCategories({ ...tagsCategories, ...{ [catagoryId]: value } });
+    const updateTagCategories = (categoryId: number, value: Tags) => {
+        let newCategories = { ...tagsCategories };
+        newCategories[categoryId].tags = value;
+        setTagsCategories(newCategories);
     }
 
     const submitEvent = async () => {
@@ -74,14 +65,14 @@ export default function CreateEvent(props: CreateEventProps) {
             ])
             .select();
         if (!data || error) {
-            alert("Something went wront - unable to submit event");
+            alert("Something went wrong - unable to submit event");
             window.location.reload();
             return;
         }
         const selectedTags = [];
         for (const [stringCategoryId, categoryValue] of Object.entries(tagsCategories)) {
             let categoryId = Number(stringCategoryId);
-            for (let [tagDataKey, tagDataValue] of Object.entries(categoryValue)) {
+            for (let [tagDataKey, tagDataValue] of Object.entries(categoryValue.tags)) {
                 if (tagDataValue.selected) {
                     selectedTags.push({
                         category_id: categoryId,
@@ -96,8 +87,7 @@ export default function CreateEvent(props: CreateEventProps) {
             .insert(selectedTags);
         window.location.reload();
     }
-
-    const tagsPages = props.tagsCategories?.map(tagCategory => <TagsGrid key={tagCategory.id} title={tagCategory.name} value={tagsCategories[tagCategory.id]} onValueChange={(value) => updateTagCategories(tagCategory.id, value)} />) || [];
+    const tagsPages = Object.entries(props.categories || {}).map(([key, value]) => <TagsGrid key={key} title={value.name} value={value.tags} onValueChange={(value) => updateTagCategories(Number(key), value)} />) || [];
     const pages = [
         <EventDateTimeAndIntensity
             startDate={startDate}
