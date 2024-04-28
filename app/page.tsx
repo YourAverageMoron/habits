@@ -59,22 +59,20 @@ export default async function Index() {
     if (data) {
         return (
             <main className="min-h-screen flex justify-center bg-fuchsia-50">
-                <Card className="max-w-screen-lg md:my-6 md:mx-6 relative">
-                    <TabGroup className="h-full p-6">
-                        <TabList>
-                            <Tab>Dashboard</Tab>
-                            <Tab>New Event</Tab>
-                        </TabList>
-                        <TabPanels>
-                            <TabPanel>
-                                <Dashboard />
-                            </TabPanel>
-                            <TabPanel className="">
-                                <CreateEvent categories={data} />
-                            </TabPanel>
-                        </TabPanels>
-                    </TabGroup>
-                </Card>
+                <TabGroup className="h-full ">
+                    <TabList>
+                        <Tab>Dashboard</Tab>
+                        <Tab>New Event</Tab>
+                    </TabList>
+                    <TabPanels>
+                        <TabPanel>
+                            <Dashboard />
+                        </TabPanel>
+                        <TabPanel className="">
+                            <CreateEvent categories={data} />
+                        </TabPanel>
+                    </TabPanels>
+                </TabGroup>
             </main >
         )
     };

@@ -1,7 +1,7 @@
 import { Database } from "@/types/supabase";
 import { createClient } from "@/utils/supabase/server";
 import { SupabaseClient } from "@supabase/supabase-js";
-import { Card, Grid, LineChart, ValueFormatter } from "@tremor/react";
+import { LineChart } from "@tremor/react";
 import { addDays, format } from "date-fns";
 import { cookies } from "next/headers";
 import React from "react";
@@ -35,7 +35,7 @@ async function createLastNDaysData(n: number, supabase: SupabaseClient<Database>
         let date = addDays(new Date(), (-n + i));
         let formattedDate = format(date, 'yyyy-MM-dd');
         resultArr.push({
-            date: format(date, 'do LLL'),
+            date: format(date, 'LLL d'),
             count: dataJson[formattedDate]?.count || 0,
             totalTime: dataJson[formattedDate]?.totalTime || 0,
         });
@@ -47,22 +47,23 @@ async function createLastNDaysData(n: number, supabase: SupabaseClient<Database>
 export default async function() {
     const cookieStore = cookies();
     const supabase = createClient(cookieStore);
-    const days = 30;
+    const days = 100;
 
     const data = await createLastNDaysData(days, supabase);
     return <>
-        <Card>
+        <div>
             <p>Total Time</p>
             <LineChart
                 className="h-80"
+                curveType="monotone"
                 data={data}
                 index="date"
                 categories={['totalTime']}
                 colors={['fuchsia', 'cyan']}
                 // valueFormatter={(value: number) => `${value} mins`}
                 connectNulls={true}
-                rotateLabelX={{ angle: 90, xAxisHeight: 100, verticalShift: 50 }}
+                // rotateLabelX={{ angle: 90, xAxisHeight: 100, verticalShift: 50 }}
             />
-        </Card>
+        </div>
     </>
 }
