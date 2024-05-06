@@ -58,7 +58,7 @@ export default async function Index() {
 
     if (data) {
         return (
-            <main className="min-h-screen flex justify-center bg-fuchsia-50">
+            <main className="min-h-screen flex justify-center">
                 <TabGroup className="h-full ">
                     <TabList>
                         <Tab>Dashboard</Tab>
@@ -77,7 +77,7 @@ export default async function Index() {
         )
     };
     return (
-        <main className="min-h-screen flex justify-center bg-fuchsia-50">
+        <main className="min-h-screen flex justify-center">
             <Card className="max-w-screen-lg md:my-6 md:mx-6 relative">
             </Card>
         </main >

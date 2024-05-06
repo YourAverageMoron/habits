@@ -21,7 +21,7 @@ export default function RootLayout({
 }) {
     return (
         <html lang="en" className={GeistSans.className}>
-            <body className="bg-background text-foreground">
+            <body className="bg-tremor-background dark:bg-dark-tremor-background text-tremor-content dark:text-dark-tremor-content">
                 <main className="">
                     {children}
                 </main>
