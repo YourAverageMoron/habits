@@ -104,7 +104,7 @@ export default function CreateEvent(props: CreateEventProps) {
     ]
 
 
-    return <div className="h-full">
+    return <div className="h-full mx-3">
         <ProgressBar className={"py-6"} value={calculateProgress(pages)} />
         <div className="mb-16">
             {pages[pageIndex]}
