@@ -2,20 +2,21 @@
 CREATE TABLE events (
         id serial primary key,
         user_id uuid default auth.uid(),
-        start_time timestamp NOT NULL,
-        end_time timestamp NOT NULL,
+        start_time timestamptz NOT NULL,
+        end_time timestamptz NOT NULL,
         intesity integer NOT NULL,
         journal text,
-        created_at timestamp DEFAULT now(),
-        updated_at timestamp DEFAULT now()
+        created_at timestamptz DEFAULT (now() at time zone 'utc'),
+        updated_at timestamptz DEFAULT (now() at time zone 'utc'),
+        timezone text NOT NULL
 );
 
 ALTER TABLE events ENABLE ROW LEVEL SECURITY;
 CREATE POLICY user_access_events ON events
     FOR ALL
     USING ((select auth.uid()) = user_id);
-
 CREATE UNIQUE INDEX ON events(id);
+ALTER TABLE events ADD CONSTRAINT events_check_timezone CHECK (timezone( timezone, '2000-01-01'::timestamp) is not null);
 
 ---
 
@@ -24,8 +25,8 @@ CREATE UNIQUE INDEX ON events(id);
         user_id uuid default auth.uid(),
         name text NOT NULL,
         category_index integer,
-        created_at timestamp DEFAULT now(),
-        updated_at timestamp DEFAULT now()
+        created_at timestamptz DEFAULT (now() at time zone 'utc'),
+        updated_at timestamptz DEFAULT (now() at time zone 'utc') 
 );
 
 ALTER TABLE event_tag_categories ENABLE ROW LEVEL SECURITY;
@@ -50,8 +51,8 @@ ALTER TABLE event_tag_categories
         event_id integer NOT NULL  REFERENCES events (id),
         category_id integer NOT NULL  REFERENCES event_tag_categories (id),
         value text NOT NULL,
-        created_at timestamp DEFAULT now(),
-        updated_at timestamp DEFAULT now()
+        created_at timestamptz DEFAULT (now() at time zone 'utc'),
+        updated_at timestamptz DEFAULT (now() at time zone 'utc') 
 );
 
 ALTER TABLE event_tags ENABLE ROW LEVEL SECURITY;
