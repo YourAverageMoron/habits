@@ -89,6 +89,7 @@ export type Database = {
           intesity: number
           journal: string | null
           start_time: string
+          timezone: string
           updated_at: string | null
           user_id: string | null
         }
@@ -99,6 +100,7 @@ export type Database = {
           intesity: number
           journal?: string | null
           start_time: string
+          timezone?: string
           updated_at?: string | null
           user_id?: string | null
         }
@@ -109,6 +111,7 @@ export type Database = {
           intesity?: number
           journal?: string | null
           start_time?: string
+          timezone?: string
           updated_at?: string | null
           user_id?: string | null
         }

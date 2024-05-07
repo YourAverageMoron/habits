@@ -50,8 +50,6 @@ export default async function() {
     const days = 100;
 
     const data = await createLastNDaysData(days, supabase);
-    // TODO: GRID
-    // WITH 1 COLOUMN FOR SMALL, 3 FOR MEDIUM/BIG
     return <div className="grid gap-3 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 sm:px-0.5 md:px-3 mt-3">
         <Card className="px-0 col-span-1 md:col-span-2 lg:col-span-3">
             <Metric className="ml-4">Total Time</Metric>

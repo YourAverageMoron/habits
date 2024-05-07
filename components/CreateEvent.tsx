@@ -57,11 +57,17 @@ export default function CreateEvent(props: CreateEventProps) {
 
     const submitEvent = async () => {
         const dates = getStartAndEndDateTimes();
-        // TODO this should be handled in one transaction, might need a CTE or a postgres function
         const { data, error } = await supabase
             .from('events')
             .insert([
-                { start_time: dates.startDateTime.toISOString(), end_time: dates.endDateTime.toISOString(), intesity: intensity, journal: journalValue },
+                {
+                    start_time: dates.startDateTime.toISOString(),
+                    end_time: dates.endDateTime.toISOString(),
+                    intesity: intensity,
+                    journal: journalValue,
+                    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+
+                },
             ])
             .select();
         if (!data || error) {
@@ -102,7 +108,6 @@ export default function CreateEvent(props: CreateEventProps) {
         ...tagsPages,
         <Journal value={journalValue} onValueChange={(value) => setJournalValue(value)} />
     ]
-
 
     return <div className="h-full mx-3">
         <ProgressBar className={"py-6"} value={calculateProgress(pages)} />
