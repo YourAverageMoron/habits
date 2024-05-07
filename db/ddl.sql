@@ -71,9 +71,11 @@ create or replace function total_time_over_days(n interval)
 returns TABLE (start_date date, count numeric, sum text)
 language sql
 as $$
-
-  select date(start_time) as start_date,  count(*), (sum(end_time - start_time))::TEXT from events
-  WHERE start_time > current_date - total_time_over_days.n
+  select
+        date(start_time at time zone timezone) as start_date,
+        count(*),
+        (sum(end_time - start_time))::TEXT from events
+  WHERE start_time at time zone timezone > current_date - total_time_over_days.n
   group by start_date
   order by start_date asc;
 $$;
