@@ -9,7 +9,7 @@ export const metadata = {
     metadataBase: new URL(defaultUrl),
     title: 'Habits',
     description: 'Record and monitor your habits',
-    icons:{
+    icons: {
         icon: 'public/favicon.png'
     }
 }

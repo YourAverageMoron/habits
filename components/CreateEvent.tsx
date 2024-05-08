@@ -9,6 +9,7 @@ import Journal from "./Journal";
 import { createClient } from "@/utils/supabase/client";
 import { timeValidation } from "./TimeInput";
 import assert from "assert";
+import { useRouter } from "next/navigation";
 
 
 type CreateEventProps = {
@@ -16,7 +17,7 @@ type CreateEventProps = {
 }
 
 
-export default function CreateEvent(props: CreateEventProps) {
+export default function CreateEventComponent(props: CreateEventProps) {
     const supabase = createClient();
     const [pageIndex, setPageIndex] = useState<number>(0);
     const [startDate, setStartDate] = useState<Date | undefined>(new Date())
@@ -25,15 +26,13 @@ export default function CreateEvent(props: CreateEventProps) {
     const [intensity, setIntensity] = useState<number>(1);
     const [tagsCategories, setTagsCategories] = useState<Categories>(props.categories || {});
     const [journalValue, setJournalValue] = useState<string>("");
-
+    const router = useRouter()
     const calculateProgress = (pages: any[]) => {
         return (pageIndex) / (pages.length - 1) * 100;
     }
-
     const validateData = () => {
         return timeValidation(startTime) || timeValidation(endTime) || !intensity;
     }
-
     const getStartAndEndDateTimes = () => {
         assert(startDate != undefined);
         const startSplit = startTime.split(':');
@@ -48,7 +47,6 @@ export default function CreateEvent(props: CreateEventProps) {
             endDateTime: endDateTime,
         }
     }
-
     const updateTagCategories = (categoryId: number, value: Tags) => {
         let newCategories = { ...tagsCategories };
         newCategories[categoryId].tags = value;
@@ -72,7 +70,7 @@ export default function CreateEvent(props: CreateEventProps) {
             .select();
         if (!data || error) {
             alert("Something went wrong - unable to submit event");
-            window.location.reload();
+            router.push('/');
             return;
         }
         const selectedTags = [];
@@ -91,7 +89,9 @@ export default function CreateEvent(props: CreateEventProps) {
         await supabase
             .from('event_tags')
             .insert(selectedTags);
-        window.location.reload();
+        router.push('/');
+
+
     }
     const tagsPages = Object.entries(props.categories || {}).map(([key, value]) => <TagsGrid key={key} title={value.name} value={value.tags} onValueChange={(value) => updateTagCategories(Number(key), value)} />) || [];
     const pages = [
