@@ -13,6 +13,7 @@ type PageReference = {
 const pages: PageReference[] = [
     { href: '/', name: 'Dashboard' },
     { href: '/create-event', name: 'Create Event' },
+    { href: '/events', name: 'Previous Events' },
 ]
 
 
