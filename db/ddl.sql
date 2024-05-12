@@ -4,7 +4,7 @@ CREATE TABLE events (
         user_id uuid default auth.uid(),
         start_time timestamptz NOT NULL,
         end_time timestamptz NOT NULL,
-        intesity integer NOT NULL,
+        intensity integer NOT NULL,
         journal text,
         created_at timestamptz DEFAULT (now() at time zone 'utc'),
         updated_at timestamptz DEFAULT (now() at time zone 'utc'),
@@ -48,8 +48,8 @@ ALTER TABLE event_tag_categories
  CREATE TABLE event_tags (
         id serial primary key,
         user_id uuid default auth.uid(),
-        event_id integer NOT NULL  REFERENCES events (id),
-        category_id integer NOT NULL  REFERENCES event_tag_categories (id),
+        event_id integer NOT NULL  REFERENCES events (id) on delete cascade,
+        category_id integer NOT NULL  REFERENCES event_tag_categories (id) on delete cascade,
         value text NOT NULL,
         created_at timestamptz DEFAULT (now() at time zone 'utc'),
         updated_at timestamptz DEFAULT (now() at time zone 'utc') 

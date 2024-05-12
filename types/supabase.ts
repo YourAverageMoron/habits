@@ -86,7 +86,7 @@ export type Database = {
           created_at: string
           end_time: string
           id: number
-          intesity: number
+          intensity: number
           journal: string | null
           start_time: string
           timezone: string
@@ -97,7 +97,7 @@ export type Database = {
           created_at?: string
           end_time: string
           id?: number
-          intesity: number
+          intensity: number
           journal?: string | null
           start_time: string
           timezone?: string
@@ -108,7 +108,7 @@ export type Database = {
           created_at?: string
           end_time?: string
           id?: number
-          intesity?: number
+          intensity?: number
           journal?: string | null
           start_time?: string
           timezone?: string

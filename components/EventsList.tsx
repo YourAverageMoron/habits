@@ -13,7 +13,7 @@ type EventsListProps = {
         start_time: string;
         end_time: string;
         timezone: string;
-        intesity: number;
+        intensity: number;
         journal: string | null;
         event_tags: {
             id: number;
@@ -46,7 +46,7 @@ export function EventsList(props: EventsListProps) {
             , start_time
             , end_time
             , timezone
-            , intesity
+            , intensity
             , journal
             , timezone
             , event_tags(
@@ -117,7 +117,7 @@ export function EventsList(props: EventsListProps) {
                                 </time>
                             </AccordionHeader>
                             <AccordionBody className="leading-6">
-                                <EventAccordionBody deleteEvent={deleteEvent} updateEvent={updateEvent} eventId={d.id} timezone={d.timezone} intensity={d.intesity} startTime={new Date(d.start_time)} endTime={new Date(d.end_time)} />
+                                <EventAccordionBody deleteEvent={deleteEvent} updateEvent={updateEvent} eventId={d.id} timezone={d.timezone} intensity={d.intensity} startTime={new Date(d.start_time)} endTime={new Date(d.end_time)} />
                             </AccordionBody>
                         </Accordion>
                         <Accordion>

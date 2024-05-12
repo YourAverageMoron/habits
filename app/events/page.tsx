@@ -21,7 +21,7 @@ export default async function CreateEvent() {
             , start_time
             , end_time
             , timezone
-            , intesity
+            , intensity
             , journal
             , timezone
             , event_tags(
