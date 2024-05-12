@@ -61,7 +61,7 @@ export default function CreateEventComponent(props: CreateEventProps) {
                 {
                     start_time: dates.startDateTime.toISOString(),
                     end_time: dates.endDateTime.toISOString(),
-                    intesity: intensity,
+                    intensity: intensity,
                     journal: journalValue,
                     timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
 

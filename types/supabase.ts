@@ -83,36 +83,36 @@ export type Database = {
       }
       events: {
         Row: {
-          created_at: string | null
+          created_at: string
           end_time: string
           id: number
-          intesity: number
+          intensity: number
           journal: string | null
           start_time: string
           timezone: string
-          updated_at: string | null
+          updated_at: string
           user_id: string | null
         }
         Insert: {
-          created_at?: string | null
+          created_at?: string
           end_time: string
           id?: number
-          intesity: number
+          intensity: number
           journal?: string | null
           start_time: string
           timezone?: string
-          updated_at?: string | null
+          updated_at?: string
           user_id?: string | null
         }
         Update: {
-          created_at?: string | null
+          created_at?: string
           end_time?: string
           id?: number
-          intesity?: number
+          intensity?: number
           journal?: string | null
           start_time?: string
           timezone?: string
-          updated_at?: string | null
+          updated_at?: string
           user_id?: string | null
         }
         Relationships: []
