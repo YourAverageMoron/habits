@@ -38,6 +38,9 @@ export function EventsList(props: EventsListProps) {
 
 
     const fetchEvents = async () => {
+        // TODO: REFACTOR THIS IN THE FUTURE
+        //  SHOULD WE PULL THE INTITIAL STATE USING SSR?
+        //  WE SHOULD HAVE PAGE SIZE AS A CONSTANT
         setIsReadyToLoad(false);
         let newEvents = await supabase
             .from('events')
@@ -58,16 +61,17 @@ export function EventsList(props: EventsListProps) {
             ,created_at
             ,updated_at`)
             .order('start_time', { ascending: false })
-            .range(10 * page, 10 * (page + 1));
-        if (newEvents.data && newEvents.data.length > 0) {
-            setPage(page + 1)
-            setEvents([...events, ...newEvents.data]);
-            setIsReadyToLoad(true);
-        }
-        else {
+            .range((10 * page) + 1, 10 * (page + 1));
+        if (!newEvents.data || newEvents.data.length > 0) {
             // TODO: HANDLE THIS ERROR PROPERLY
             console.log(newEvents.error);
+            return;
         }
+        setPage(page + 1)
+        setEvents([...events, ...newEvents.data]);
+        // TODO: IF THE LENGTH IS LESS THAN THE PAGE SIZE THEN DONT PULL ANY MORE
+        setIsReadyToLoad(true);
+        return;
     }
 
     const handleScroll = () => {
@@ -95,7 +99,7 @@ export function EventsList(props: EventsListProps) {
             .eq('id', id);
         if (eventsError) {
             alert("WARNING: an error occured, unable to delete event");
-            console.log(eventsError);
+            return;
         }
         setEvents(events.filter((e) => e.id != id));
         alert("event deleted")
@@ -104,7 +108,7 @@ export function EventsList(props: EventsListProps) {
     return (
         <>
             {events.map((d) => (
-                <li className="mb-10 ms-6">
+                <li key={`event-element-${d.id}`} className="mb-10 ms-6">
                     <span className="absolute flex items-center justify-center w-6 h-6 bg-tremor-background rounded-full -start-3 ring-8 ring-tremor-background dark:ring-dark-tremor-background dark:bg-dark-tremor-background">
                         <img className="rounded-full shadow-lg" src="/favicon.png" alt="Bonnie image" />
                     </span>

@@ -26,9 +26,6 @@ type TagCatagories = {
 
 export function EventAccordionBodyTags(props: EventAccordionBodyTagsProps) {
     const categories = groupTags(props.tags);
-
-    console.log(categories);
-
     return (
         <>
             {Object.keys(categories).map((c) => (
@@ -36,7 +33,7 @@ export function EventAccordionBodyTags(props: EventAccordionBodyTagsProps) {
                     <p className="font-medium">{categories[c].name}</p>
                     <div className="flex">
                         {categories[c].tags.map((t) => (
-                            <Badge className="text-xs font-light">{t.value}</Badge>
+                            <Badge key={`tag-badge-${t.id}`} className="text-xs font-light">{t.value}</Badge>
                         ))}
                     </div>
                 </>

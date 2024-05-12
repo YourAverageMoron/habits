@@ -17,7 +17,7 @@ export function EventAccordionBody(props: EventAccordionBodyProps) {
         <p>Start Time - {formatDateWithTimezone(props.startTime, props.timezone)}</p>
         <p>End Time - {formatDateWithTimezone(props.endTime, props.timezone)}</p>
         <p>Intensity - {props.intensity}</p>
-        <div className="flex justify-center gap-3 mt-6 mb-3">
+        <div className="flex justify-center gap-3 my-3">
             <Button className="w-20" onClick={() => props.updateEvent(props.eventId)} size="sm" variant="secondary">Edit</Button>
             <Button className="w-20" onClick={() => props.deleteEvent(props.eventId)} size="sm" color="red" variant="secondary" >Delete</Button>
         </div>
