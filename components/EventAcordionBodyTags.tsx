@@ -26,9 +26,6 @@ type TagCatagories = {
 
 export function EventAccordionBodyTags(props: EventAccordionBodyTagsProps) {
     const categories = groupTags(props.tags);
-
-    console.log(categories);
-
     return (
         <>
             {Object.keys(categories).map((c) => (

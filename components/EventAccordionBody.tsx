@@ -16,6 +16,7 @@ export function EventAccordionBody(props: EventAccordionBodyProps) {
     return <div>
         <p>Start Time - {formatDateWithTimezone(props.startTime, props.timezone)}</p>
         <p>End Time - {formatDateWithTimezone(props.endTime, props.timezone)}</p>
+        <p>Minutes - </p>
         <p>Intensity - {props.intensity}</p>
         <div className="flex justify-center gap-3">
             <Button onClick={() => props.updateEvent(props.eventId)} size="sm" variant="secondary">Edit</Button>
@@ -26,6 +27,6 @@ export function EventAccordionBody(props: EventAccordionBodyProps) {
 }
 
 const formatDateWithTimezone = (d: Date, tz: string) => {
-    return formatInTimeZone(d, tz, 'yyyy-mm-dd HH:mm:ss zzz')
+    return formatInTimeZone(d, tz, 'yyyy-MM-dd HH:mm:ss zzz')
 
 }
