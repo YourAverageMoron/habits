@@ -93,7 +93,10 @@ export default function CreateEventComponent(props: CreateEventProps) {
 
 
     }
-    const tagsPages = Object.entries(props.categories || {}).map(([key, value]) => <TagsGrid key={key} title={value.name} value={value.tags} onValueChange={(value) => updateTagCategories(Number(key), value)} />) || [];
+    const tagsPages = Object.entries(
+        props.categories || {}
+    ).sort((a, b) => a[1].index - b[1].index
+    ).map(([key, value]) => <TagsGrid key={key} title={value.name} value={value.tags} onValueChange={(value) => updateTagCategories(Number(key), value)} />) || [];
     const pages = [
         <EventDateTimeAndIntensity
             startDate={startDate}

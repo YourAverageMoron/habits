@@ -10,7 +10,8 @@ import Nav from "@/components/Nav";
 async function createEventCategories(supabase: SupabaseClient<Database>) {
     let categories = await supabase
         .from('event_tag_categories')
-        .select('id, name, category_index');
+        .select('id, name, category_index')
+        .order("category_index");
 
     if (!categories.data || categories.error) {
         //TODO: throw an error or something 
