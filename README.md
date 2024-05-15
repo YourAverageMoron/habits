@@ -8,8 +8,9 @@
 - [ ] on submit check if there are any events that exist at the same time as the one being input
 - [x] fix mobile styling on main page
 - [x] fix utc time errors
-- [ ] add a list of entries with the ability to modify or delete them
+- [x] add a list of entries with the ability to modify or delete them
 - [ ] fix the server side rendering issues
+- [ ] implement updating events
 
 
 ## Ideas
