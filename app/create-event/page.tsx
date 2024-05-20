@@ -7,7 +7,7 @@ import CreateEventComponent from "@/components/CreateEvent";
 import { redirect } from "next/navigation";
 import Nav from "@/components/Nav";
 
-export const revalidate = 10;
+export const revalidate = 0;
 
 async function createEventCategories(supabase: SupabaseClient<Database>) {
     let categories = await supabase

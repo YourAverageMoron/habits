@@ -5,7 +5,7 @@ import { isLoggedIn } from '@/utils/supabase/checkLogin';
 import Nav from '@/components/Nav';
 
 
-export const revalidate = 10;
+export const revalidate = 0;
 
 export default async function Index() {
     const cookieStore = cookies();
