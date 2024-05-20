@@ -5,7 +5,7 @@ import { isLoggedIn } from '@/utils/supabase/checkLogin';
 import Nav from '@/components/Nav';
 
 
-
+export const revalidate = 10;
 
 export default async function Index() {
     const cookieStore = cookies();
@@ -15,7 +15,7 @@ export default async function Index() {
     // TODO: We can probably move the dashboard up to this level
     return (
         <main className="min-h-screen">
-            <Nav/>
+            <Nav />
             <div className='w-full'>
                 <Dashboard />
             </div >
