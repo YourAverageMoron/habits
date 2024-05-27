@@ -25,7 +25,7 @@ export default function Nav() {
     };
     return (
         <div className="sticky top-0 z-50 h-14 bg-tremor-background dark:bg-dark-tremor-background dark:bg-opacity-75 bg-opacity-75">
-            <div className="hidden sm:flex h-full flex items-center px-6">
+            <div className="hidden sm:flex h-full flex items-center px-3">
                 <DesktopNavLinks pathname={pathname} />
             </div>
             <div className="sm:hidden h-full flex items-center flex-row-reverse px-6">

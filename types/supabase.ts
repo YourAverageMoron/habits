@@ -131,6 +131,16 @@ export type Database = {
           value: string
         }[]
       }
+      hour_of_day: {
+        Args: {
+          n: unknown
+        }
+        Returns: {
+          hour: number
+          count: number
+          average: string
+        }[]
+      }
       total_time_over_days: {
         Args: {
           n: unknown

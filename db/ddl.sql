@@ -90,3 +90,18 @@ select category_id, value from event_tags
 where category_id = ANY(get_tag_values.categories)
 group by category_id, value;
 $$;
+
+
+create or replace function hour_of_day(n interval)
+returns TABLE (hour numeric, count numeric, average text)
+language sql
+as $$
+select 
+date_part('hour', start_time at time zone timezone) as hour,
+count(*) as count,
+avg(end_time - start_time):: TEXT as average
+ from events 
+ where start_time at time zone timezone > current_date - hour_of_day.n
+ group by hour 
+ order by hour asc;
+$$;
