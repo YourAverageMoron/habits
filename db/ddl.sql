@@ -105,3 +105,21 @@ avg(end_time - start_time):: TEXT as average
  group by hour 
  order by hour asc;
 $$;
+
+
+create or replace function category_averages(n interval, categories numeric[])
+returns TABLE (category_value text, category_id numeric, count numeric, average_time text, average_intensity numeric)
+language sql
+as $$
+select 
+value,
+category_id,
+count(*) as count,
+avg(end_time - start_time):: TEXT as average_time,
+round(avg(intensity), 2) as average_intensity
+from event_tags as et
+left join events as e on e.id = et.event_id
+where start_time at time zone timezone > current_date - category_averages.n
+AND category_id in (select unnest(category_averages.categories))
+GROUP BY value, category_id;
+$$;

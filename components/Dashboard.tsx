@@ -3,9 +3,7 @@ import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@tremor/react";
 import { cookies } from "next/headers";
 import React from "react";
 import DashboardSummary from "./DashboardSummary";
-
-
-
+import DashboardCategories from "./DashboardCategories";
 
 
 export default async function() {
@@ -22,9 +20,7 @@ export default async function() {
                     <DashboardSummary client={supabase} tags={[]} />
                 </TabPanel>
                 <TabPanel>
-                    <p className="mt-4 leading-6 text-tremor-default text-tremor-content dark:text-dark-tremor-content">
-                        Diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat. Lorem ipsum dolor sit amet, consetetur sadipscing elitr.
-                    </p>
+                    <DashboardCategories tags={[]} />
                 </TabPanel>
             </TabPanels>
         </TabGroup>

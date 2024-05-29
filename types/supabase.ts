@@ -122,6 +122,44 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      category_averages:
+        | {
+            Args: {
+              n: unknown
+            }
+            Returns: {
+              category_value: string
+              category_id: number
+              count: number
+              average_time: string
+              average_intensity: number
+            }[]
+          }
+        | {
+            Args: {
+              n: unknown
+              categories: number[]
+            }
+            Returns: {
+              category_value: string
+              category_id: number
+              count: number
+              average_time: string
+              average_intensity: number
+            }[]
+          }
+        | {
+            Args: {
+              n: unknown
+              category: number
+            }
+            Returns: {
+              category_value: string
+              count: number
+              average_time: string
+              average_intensity: number
+            }[]
+          }
       get_tag_values: {
         Args: {
           categories: number[]
