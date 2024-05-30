@@ -1,126 +1,64 @@
 "use client"
 
-import { Database } from "@/types/supabase";
-import { createClient } from "@/utils/supabase/client";
-import { SupabaseClient } from "@supabase/supabase-js";
-import { Card, DonutChart, Legend, Metric, MultiSelect, MultiSelectItem } from "@tremor/react";
-import { useEffect, useState } from "react";
+import getCategoryValueAverages from "@/queries/get-category-value-averages";
+import { CategoryValueAverage } from "@/types/category-value-average";
+import { useQuery } from "@tanstack/react-query";
+import { DonutChart, Legend, MultiSelect, MultiSelectItem } from "@tremor/react";
+import { useState } from "react";
+import DashboardCard from "./DashboardCard";
+import { Category } from "@/types/tags";
 
-
-type PieData = {
-    category_value: string;
-    category_id: number,
-    count: number;
-    average_time: string;
-    average_intensity: number;
-}
-
-
-function getDays(startDate?: Date, endDate?: Date) {
-    return 100; // TODO: IMPLEMENT THIS
-}
 
 type CategoryDistributionPieChartProps = {
     startDate?: Date,
     endDate?: Date,
+    categories: Category[]
+
 }
 
-type Category = {
-    id: number,
-    name: string,
-}
-
-async function getCategories(client: SupabaseClient<Database>) {
-    let { data, error } = await client
-        .from('event_tag_categories')
-        .select('id, name');
-    if (!data) {
-        // TODO: HANDLE THIS PROPERLY
-        throw Error("TODO SOMETHING ELSE HERE");
-    }
-    return data;
-}
-
-async function getData(n: number, client: SupabaseClient<Database>) {
-    let { data, error } = await client
-        .rpc('category_averages', {
-            n: `${n} day`,
-        });
-
-    if (!data) {
-        // TODO: HANDLE THIS PROPERLY
-        throw Error("TODO SOMETHING ELSE HERE");
-    }
-    return data;
-}
-
-function filterData(data: PieData[], selectedCategories: Set<string>) {
+function filterData(data: CategoryValueAverage[], selectedCategories: Set<string>) {
     if (selectedCategories.size == 0) { return data }
     return data.filter(d => selectedCategories.has(d.category_id.toString()));
 }
 
 export default function(props: CategoryDistributionPieChartProps) {
-
-    const client = createClient();
-
-    const [isLoadingCategories, setIsLoadingCategories] = useState<boolean>(true);
-    const [categories, setCategories] = useState<Category[]>([]);
-    const [isLoadingData, setIsLoadingData] = useState<boolean>(true);
-    const [data, setData] = useState<PieData[]>([]);
     const [selectedCategories, setSelectedCategories] = useState<Set<string>>(new Set());
+    const queryResult = useQuery({ queryKey: ["category-averages"], queryFn: getCategoryValueAverages });
 
-    useEffect(() => {
-        async function fetchData() {
-            setIsLoadingCategories(true);
-            try {
-                const response = await getCategories(client);
-                setCategories(response);
-            } catch (error) {
-                console.error(error);
-            } finally {
-                setIsLoadingCategories(false);
-            }
-        }
-        fetchData();
-    }, []);
+    const metric = "count"; //TODO: THIS SHOULDNT BE HARDCODED
+    function content(d: CategoryValueAverage[]) {
+        return (<>
+            <div className="flex">
+                <MultiSelect value={Array.from(selectedCategories)} onValueChange={v => setSelectedCategories(new Set(v))}>
+                    {props.categories.map(c => <MultiSelectItem value={c.id.toString()}>{c.name}</MultiSelectItem>
+                    )}
+                </MultiSelect>
+            </div>
+            <div className="flex items-center justify-center space-x-6">
+                <DonutChart
+                    data={d}
+                    variant="pie"
+                    index="category_value"
+                    category={metric}
+                />
+                <Legend
+                    categories={d.map(data => data.category_value)}
+                    className="max-w-xs" />
+            </div>
+        </>)
+    }
 
-    useEffect(() => {
-        async function fetchData() {
-            setIsLoadingData(true);
-            try {
-                const response = await getData(getDays(props.startDate, props.endDate), client);
-                setData(response);
-            } catch (error) {
-                console.error(error);
-            } finally {
-                setIsLoadingData(false);
-            }
-        }
-        fetchData();
-    }, []);
+    function transform(data: CategoryValueAverage[]) {
+        return filterData(data, selectedCategories).sort((a, b) => b[metric] - a[metric]);
 
-    const category = "count"; //TODO: THIS SHOULDNT BE HARDCODED
+    }
 
-    const filteredData = filterData(data, selectedCategories).sort((a, b) => b[category] - a[category]);
-    return <Card className="col-span-1 md:col-span-1 lg:col-span-1">
-        <Metric className="pb-4 ml-4">Category Breakdown</Metric>
-        <div className="flex">
-            <MultiSelect value={Array.from(selectedCategories)} onValueChange={v => setSelectedCategories(new Set(v))}>
-                {categories.map(c => <MultiSelectItem value={c.id.toString()}>{c.name}</MultiSelectItem>
-                )}
-            </MultiSelect>
-        </div>
-        <div className="flex items-center justify-center space-x-6">
-            <DonutChart
-                data={filteredData}
-                variant="pie"
-                index="category_value"
-                category={category}
-            />
-            <Legend
-                categories={filteredData.map(d => d.category_value)}
-                className="max-w-xs" />
+    return <DashboardCard
+        className="col-span-1 md:col-span-1 lg:col-span-1"
+        title="Category Averages"
+        queryResult={queryResult}
+        content={content}
+        dataTransform={transform}
+    />
 
-        </div>
-    </Card>
 }

@@ -72,9 +72,7 @@ async function createLastNDaysData(n: number, supabase: SupabaseClient<Database>
             totalTime: timeInMin,
         }
     });
-
     const resultArr: LineChartData[] = [];
-
     for (let i = 0; i <= n; i++) {
         let date = addDays(new Date(), (-n + i));
         let formattedDate = format(date, 'yyyy-MM-dd');

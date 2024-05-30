@@ -1,14 +1,10 @@
 
-type Tags = {
-    [key: string]: {selected: boolean}
+export type Tag = {
+    value: string,
+    category: Category,
 }
 
-type Category = {
-    name: string;
-    index: number;
-    tags: Tags;
-}
-
-type Categories = {
-    [key: string]: Category;
+export type Category = {
+    id: number,
+    name: string,
 }
