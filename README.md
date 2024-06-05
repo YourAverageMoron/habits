@@ -13,6 +13,7 @@
 - [ ] implement updating events
 - [ ] on line chart green dots when no event that day
 - [ ] fuzzy finder on event tags when creating events
+- [ ] Investigate previous events page not showing everything bug
 
 
 ## Ideas
