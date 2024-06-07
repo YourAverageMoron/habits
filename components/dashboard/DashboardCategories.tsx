@@ -1,5 +1,5 @@
 import { Category } from "@/types/tags";
-import CategoryDistributionPieCard from "./CategoryDistributionPieCard";
+import CategoryDistributionPieCard from "./cards/CategoryDistributionPieCard";
 
 
 type DashboardCategoriesProps = {

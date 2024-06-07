@@ -125,13 +125,15 @@ export type Database = {
       category_averages: {
         Args: {
           n: unknown
+          intensity_time_weight: number
         }
         Returns: {
           category_value: string
           category_id: number
           count: number
-          average_time: string
-          average_intensity: number
+          time: string
+          intensity: number
+          intensity_time: string
         }[]
       }
       get_tag_values: {

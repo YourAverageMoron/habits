@@ -1,12 +1,13 @@
 "use client"
 
 import getCategoryValueAverages from "@/queries/get-category-value-averages";
-import { CategoryValueAverage } from "@/types/category-value-average";
+import { CategoryValueAverage } from "@/types/dashbard-data";
 import { useQuery } from "@tanstack/react-query";
-import { DonutChart, Legend, MultiSelect, MultiSelectItem } from "@tremor/react";
+import { DonutChart, Legend, MultiSelect, MultiSelectItem, Select, SelectItem } from "@tremor/react";
 import { useState } from "react";
-import DashboardCard from "./DashboardCard";
+import DashboardCard from "../DashboardCard";
 import { Category } from "@/types/tags";
+import { Metrics, MetricsKeys } from "@/types/metrics";
 
 
 type CategoryDistributionPieChartProps = {
@@ -23,34 +24,42 @@ function filterData(data: CategoryValueAverage[], selectedCategories: Set<string
 
 export default function(props: CategoryDistributionPieChartProps) {
     const [selectedCategories, setSelectedCategories] = useState<Set<string>>(new Set());
+    const [selectedMetric, setSelectedMetric] = useState<MetricsKeys>("count");
     const queryResult = useQuery({ queryKey: ["category-averages"], queryFn: getCategoryValueAverages });
-
-    const metric = "count"; //TODO: THIS SHOULDNT BE HARDCODED
     function content(d: CategoryValueAverage[]) {
+        const categories = d.map(v => v.category_value);
         return (<>
             <div className="flex">
                 <MultiSelect value={Array.from(selectedCategories)} onValueChange={v => setSelectedCategories(new Set(v))}>
                     {props.categories.map(c => <MultiSelectItem value={c.id.toString()}>{c.name}</MultiSelectItem>
                     )}
                 </MultiSelect>
+                <Select value={selectedMetric} onValueChange={v => setSelectedMetric(v)}>
+                    {Object.keys(Metrics).map(m => <SelectItem value={m}>{Metrics[m]}</SelectItem>
+                    )}
+                </Select>
             </div>
             <div className="flex items-center justify-center space-x-6">
                 <DonutChart
                     data={d}
                     variant="pie"
                     index="category_value"
-                    category={metric}
+                    category={selectedMetric}
                 />
                 <Legend
-                    categories={d.map(data => data.category_value)}
-                    className="max-w-xs" />
+                    categories={categories.slice(0, 22)}
+                    className="max-w-xs" 
+                    />
             </div>
         </>)
     }
+    function transform(data: CategoryValueAverage[]): CategoryValueAverage[] {
+        // TODO: IS THERE A BETTER WAY TO DO THIS?
+        if (selectedMetric === "count" || selectedMetric === "time" || selectedMetric === "intensity" || selectedMetric === "intensity_time") {
+            return filterData(data, selectedCategories).sort((a, b) => b[selectedMetric] - a[selectedMetric]);
+        }
 
-    function transform(data: CategoryValueAverage[]) {
-        return filterData(data, selectedCategories).sort((a, b) => b[metric] - a[metric]);
-
+        return [];
     }
 
     return <DashboardCard

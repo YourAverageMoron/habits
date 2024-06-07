@@ -23,15 +23,16 @@ export default async function() {
     const cookieStore = cookies();
     const supabase = createClient(cookieStore);
     const categories = await getCategories(supabase);
+    // NOTE: HARDCODED FUCHSIA AS THERE IS A BUG IN TREMOR https://github.com/tremorlabs/tremor/issues/1071
     return <div className="sm:px-0.5 md:px-6 mt-6">
         <TabGroup className="w-full">
-            <TabList variant="line" defaultValue="1">
+            <TabList color={'fuchsia'} variant="line" defaultValue="1">
                 <Tab value="1">Summary</Tab>
                 <Tab value="2">Categories</Tab>
             </TabList>
             <TabPanels>
                 <TabPanel>
-                    <DashboardSummary client={supabase} tags={[]} />
+                    <DashboardSummary categories={categories} />
                 </TabPanel>
                 <TabPanel>
                     <DashboardCategories categories={categories} />

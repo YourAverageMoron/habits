@@ -107,18 +107,19 @@ avg(end_time - start_time):: TEXT as average
 $$;
 
 
-create or replace function category_averages(n interval)
-returns TABLE (category_value text, category_id numeric, count numeric, average_time text, average_intensity numeric)
+create or replace function category_averages(n interval, intensity_time_weight numeric)
+returns TABLE (category_value text, category_id numeric, count numeric, time text, intensity numeric, intensity_time text)
 language sql
 as $$
 select 
 value,
 category_id,
 count(*) as count,
-avg(end_time - start_time):: TEXT as average_time,
-round(avg(intensity), 2) as average_intensity
+avg(end_time - start_time):: TEXT as time,
+round(avg(intensity), 2) as intensity,
+avg((end_time - start_time) * intensity * category_averages.intensity_time_weight):: TEXT intensity_time
 from event_tags as et
 left join events as e on e.id = et.event_id
-where start_time at time zone timezone > current_date - category_averages.n
+where start_time at time zone timezone > current_date - 100
 GROUP BY value, category_id;
 $$;

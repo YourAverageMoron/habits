@@ -1,6 +1,6 @@
 import { createClient } from '@/utils/supabase/server'
 import { cookies } from 'next/headers'
-import Dashboard from '@/components/Dashboard';
+import Dashboard from '@/components/dashboard/Dashboard';
 import { isLoggedIn } from '@/utils/supabase/checkLogin';
 import Nav from '@/components/Nav';
 
