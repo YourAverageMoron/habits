@@ -8,16 +8,19 @@ import { useQuery } from "@tanstack/react-query";
 import getHoursOfDayAverages from "@/queries/get-hours-of-day-averages";
 
 
-type HoursOfDayBarCard = {
-    startDate?: Date,
-    endDate?: Date,
+type HoursOfDayBarCardProps = {
+    startDate: Date,
+    endDate: Date,
     categories: Category[]
 
 }
 
-export default function(props: HoursOfDayBarCard) {
+export default function(props: HoursOfDayBarCardProps) {
     // TODO: USE CATEGORIES
-    const queryResult = useQuery({ queryKey: ["hours-of-day-averages"], queryFn: getHoursOfDayAverages });
+    const queryResult = useQuery({
+        queryKey: ["hours-of-day-averages", props.startDate, props.endDate],
+        queryFn: () => getHoursOfDayAverages(props.startDate, props.endDate)
+    });
     function content(d: HourOfDayAverages[]) {
         return (<>
             <BarChart

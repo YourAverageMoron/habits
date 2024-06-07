@@ -67,28 +67,13 @@ CREATE INDEX ON event_tags(category_id);
 
 ---
 
-
-create or replace function total_time_over_days(n interval)
-returns TABLE (start_date date, count numeric, sum text)
-language sql
-as $$
-  select
-        date(start_time at time zone timezone) as start_date,
-        count(*),
-        (sum(end_time - start_time))::TEXT from events
-  WHERE start_time at time zone timezone > current_date - total_time_over_days.n
-  group by start_date
-  order by start_date asc;
-$$;
-
-
 create or replace function get_tag_values(categories numeric[])
 returns TABLE (category_id numeric, value text)
 language sql
 as $$
-select category_id, value from event_tags 
-where category_id = ANY(get_tag_values.categories)
-group by category_id, value;
+    select category_id, value from event_tags 
+    where category_id = ANY(get_tag_values.categories)
+    group by category_id, value;
 $$;
 
 
@@ -96,30 +81,48 @@ create or replace function hour_of_day(n interval)
 returns TABLE (hour numeric, count numeric, average text)
 language sql
 as $$
-select 
-date_part('hour', start_time at time zone timezone) as hour,
-count(*) as count,
-avg(end_time - start_time):: TEXT as average
- from events 
- where start_time at time zone timezone > current_date - hour_of_day.n
- group by hour 
- order by hour asc;
+    select 
+    date_part('hour', start_time at time zone timezone) as hour,
+    count(*) as count,
+    avg(end_time - start_time):: TEXT as average
+     from events 
+     where start_time at time zone timezone > current_date - hour_of_day.n
+     group by hour 
+     order by hour asc;
 $$;
 
 
-create or replace function category_averages(n interval, intensity_time_weight numeric)
-returns TABLE (category_value text, category_id numeric, count numeric, time text, intensity numeric, intensity_time text)
+--- DASHBOARD FUNCTIONS ---
+
+create or replace function category_averages(start_date timestamp, end_date timestamp, intensity_time_weight numeric)
+returns TABLE (category_value text, category_id numeric, count numeric, "time" text, intensity numeric, intensity_time text)
 language sql
 as $$
-select 
-value,
-category_id,
-count(*) as count,
-avg(end_time - start_time):: TEXT as time,
-round(avg(intensity), 2) as intensity,
-avg((end_time - start_time) * intensity * category_averages.intensity_time_weight):: TEXT intensity_time
-from event_tags as et
-left join events as e on e.id = et.event_id
-where start_time at time zone timezone > current_date - 100
-GROUP BY value, category_id;
+    select
+    value,
+    category_id,
+    count(*) as count,
+    avg(end_time - start_time):: TEXT as time,
+    round(avg(intensity), 2) as intensity,
+    avg((end_time - start_time) * intensity * category_averages.intensity_time_weight):: TEXT intensity_time
+    from event_tags as et
+    left join events as e on e.id = et.event_id
+    where start_time >= start_date and start_time <= end_date
+    GROUP BY value, category_id;
+$$;
+
+
+create or replace function daily_totals(start_date timestamp, end_date timestamp, intensity_time_weight numeric)
+returns TABLE ("date" date, count numeric, "time" text, intensity numeric, intensity_time text)
+language sql
+as $$
+  select
+        date(start_time at time zone timezone) as date,
+        count(*) as count,
+        (sum(end_time - start_time))::TEXT as time,
+        avg(intensity) as intensity,
+        sum((end_time - start_time) * intensity * intensity_time_weight):: TEXT as intensity_time from events
+  WHERE start_time >= start_date and start_time <= end_date
+  group by "date"
+  order by start_date asc;
 $$;

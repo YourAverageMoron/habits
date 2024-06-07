@@ -23,6 +23,11 @@ export default async function() {
     const cookieStore = cookies();
     const supabase = createClient(cookieStore);
     const categories = await getCategories(supabase);
+
+    // TODO: THERE SHOULD BE A FILTER THAT SELECTS THESE
+    const startDate = new Date(0);
+    const endDate = new Date();
+
     // NOTE: HARDCODED FUCHSIA AS THERE IS A BUG IN TREMOR https://github.com/tremorlabs/tremor/issues/1071
     return <div className="sm:px-0.5 md:px-6 mt-6">
         <TabGroup className="w-full">
@@ -32,10 +37,10 @@ export default async function() {
             </TabList>
             <TabPanels>
                 <TabPanel>
-                    <DashboardSummary categories={categories} />
+                    <DashboardSummary categories={categories} startDate={startDate} endDate={endDate} />
                 </TabPanel>
                 <TabPanel>
-                    <DashboardCategories categories={categories} />
+                    <DashboardCategories categories={categories} startDate={startDate} endDate={endDate} />
                 </TabPanel>
             </TabPanels>
         </TabGroup>

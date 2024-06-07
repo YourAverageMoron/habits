@@ -8,16 +8,19 @@ import { useQuery } from "@tanstack/react-query";
 import getDailyTotals from "@/queries/get-daily-totals";
 
 
-type DailyTotalLineCard = {
-    startDate?: Date,
-    endDate?: Date,
+type DailyTotalLineCardProps = {
+    startDate: Date,
+    endDate: Date,
     categories: Category[]
 
 }
 
-export default function(props: DailyTotalLineCard) {
+export default function(props: DailyTotalLineCardProps) {
     // TODO: USE CATEGORIES
-    const queryResult = useQuery({ queryKey: ["daily-totals"], queryFn: getDailyTotals });
+    const queryResult = useQuery({
+        queryKey: ["daily-totals", props.startDate, props.endDate],
+        queryFn: () => getDailyTotals(props.startDate, props.endDate)
+    });
     function content(d: DailyTotal[]) {
         return (<>
             <LineChart
@@ -25,8 +28,8 @@ export default function(props: DailyTotalLineCard) {
                 curveType="monotone"
                 data={d}
                 index="date"
-                categories={['totalTime', 'count']}
-                colors={['fuchsia', 'cyan', 'amber']}
+                categories={['time', 'count', 'intensity', 'intensity_time']}
+                colors={['fuchsia', 'cyan', 'amber', 'emerald']} // TODO: MAKE THESE AND THE CATEGORIES LINKED MAYBE HAVE A MAP OR SOMETHING
                 // valueFormatter={(value: number) => `${value} mins`}
                 connectNulls={true}
             // rotateLabelX={{ angle: 90, xAxisHeight: 100, verticalShift: 50 }}

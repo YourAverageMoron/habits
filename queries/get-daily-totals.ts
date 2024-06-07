@@ -1,24 +1,35 @@
 import { DailyTotal } from "@/types/dashbard-data";
+import { INTENSITY_TIME_WEIGHT } from "@/types/metrics";
 import { createClient } from "@/utils/supabase/client";
 import { addDays, format } from "date-fns";
 
 
-// TODO: THIS NEEDS TO TAKE IN N (or the dates) AS A PARAMETER
-export default async function getDailyTotals(): Promise<DailyTotal[]> {
+function timeInMin(time: string): number {
+    let splitTime = time.split(':');
+    return (Number(splitTime[0]) * 60) + Number(splitTime[1]) + (Number(splitTime[2]) / 60)
+}
+
+export default async function getDailyTotals(startDate: Date, endDate: Date): Promise<DailyTotal[]> {
     const n = 100
     const client = createClient();
     let { data, error } = await client
-        .rpc('total_time_over_days', {
-            n: `${n} day`
+        .rpc('daily_totals', {
+            start_date: startDate.toISOString(),
+            end_date: endDate.toISOString(),
+            intensity_time_weight: INTENSITY_TIME_WEIGHT,
         });
-
-    const dataJson: { [key: string]: { count: number, totalTime: number } } = {}
+    if (!data || error) {
+        //TODO: MAKE THIS BETTER
+        throw Error("TODO: MAKE THIS BETTER");
+    }
+    const dataJson: { [key: string]: DailyTotal } = {}
     data?.forEach(d => {
-        let splitTime = d.sum.split(':');
-        let timeInMin = (Number(splitTime[0]) * 60) + Number(splitTime[1]) + (Number(splitTime[2]) / 60)
-        dataJson[d.start_date] = {
+        dataJson[d.date] = {
+            date: d.date,
             count: d.count,
-            totalTime: timeInMin,
+            time: timeInMin(d.time),
+            intensity: d.intensity,
+            intensity_time: timeInMin(d.intensity_time)
         }
     });
     const resultArr: DailyTotal[] = [];
@@ -28,7 +39,9 @@ export default async function getDailyTotals(): Promise<DailyTotal[]> {
         resultArr.push({
             date: format(date, 'LLL d'),
             count: dataJson[formattedDate]?.count || 0,
-            totalTime: dataJson[formattedDate]?.totalTime || 0,
+            time: dataJson[formattedDate]?.time || 0,
+            intensity: dataJson[formattedDate]?.intensity || 0,
+            intensity_time: dataJson[formattedDate]?.intensity_time || 0,
         });
     }
     return resultArr;

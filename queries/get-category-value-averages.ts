@@ -2,17 +2,17 @@ import { CategoryValueAverage } from "@/types/dashbard-data";
 import { INTENSITY_TIME_WEIGHT } from "@/types/metrics";
 import { createClient } from "@/utils/supabase/client";
 
-// TODO: THIS NEEDS TO TAKE IN N as an argument
-export default async function getCategoryValueAverages(): Promise<CategoryValueAverage[]> {
-    const n = 100
+export default async function getCategoryValueAverages(startDate: Date, endDate: Date): Promise<CategoryValueAverage[]> {
+
     const client = createClient();
     let { data, error } = await client
         .rpc('category_averages', {
-            n: `${n} day`,
+            start_date: startDate.toISOString(),
+            end_date: endDate.toISOString(),
             intensity_time_weight: INTENSITY_TIME_WEIGHT
         });
 
-    if (!data) {
+    if (!data || error) {
         // TODO: HANDLE THIS PROPERLY
         throw Error("TODO SOMETHING ELSE HERE");
     }

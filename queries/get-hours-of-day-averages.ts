@@ -2,8 +2,7 @@ import { HourOfDayAverages as HoursOfDayAverages } from "@/types/dashbard-data";
 import { createClient } from "@/utils/supabase/client";
 
 
-// TODO: THIS NEEDS TO TAKE IN N (or the dates) AS A PARAMETER
-export default async function getHoursOfDayAverages(): Promise<HoursOfDayAverages[]> {
+export default async function getHoursOfDayAverages(startDate: Date, endDate: Date): Promise<HoursOfDayAverages[]> {
     const n = 100
     const client = createClient();
     let { data, error } = await client

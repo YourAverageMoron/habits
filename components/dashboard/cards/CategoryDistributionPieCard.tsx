@@ -11,8 +11,8 @@ import { Metrics, MetricsKeys } from "@/types/metrics";
 
 
 type CategoryDistributionPieChartProps = {
-    startDate?: Date,
-    endDate?: Date,
+    startDate: Date,
+    endDate: Date,
     categories: Category[]
 
 }
@@ -25,7 +25,10 @@ function filterData(data: CategoryValueAverage[], selectedCategories: Set<string
 export default function(props: CategoryDistributionPieChartProps) {
     const [selectedCategories, setSelectedCategories] = useState<Set<string>>(new Set());
     const [selectedMetric, setSelectedMetric] = useState<MetricsKeys>("count");
-    const queryResult = useQuery({ queryKey: ["category-averages"], queryFn: getCategoryValueAverages });
+    const queryResult = useQuery({
+        queryKey: ['category-value-averages', props.startDate, props.endDate],
+        queryFn: () => getCategoryValueAverages(props.startDate, props.endDate)
+    });
     function content(d: CategoryValueAverage[]) {
         const categories = d.map(v => v.category_value);
         return (<>
@@ -48,8 +51,8 @@ export default function(props: CategoryDistributionPieChartProps) {
                 />
                 <Legend
                     categories={categories.slice(0, 22)}
-                    className="max-w-xs" 
-                    />
+                    className="max-w-xs"
+                />
             </div>
         </>)
     }

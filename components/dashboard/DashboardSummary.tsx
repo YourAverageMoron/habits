@@ -3,8 +3,8 @@ import { Category } from "@/types/tags";
 import HoursOfDayBarCard from "./cards/HoursOfDayBarCard";
 
 type DashboardSummaryProps = {
-    startDate?: Date;
-    endDate?: Date;
+    startDate: Date;
+    endDate: Date;
     categories: Category[]
 }
 

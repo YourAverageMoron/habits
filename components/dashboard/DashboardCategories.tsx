@@ -3,8 +3,8 @@ import CategoryDistributionPieCard from "./cards/CategoryDistributionPieCard";
 
 
 type DashboardCategoriesProps = {
-    startDate?: Date;
-    endDate?: Date;
+    startDate: Date;
+    endDate: Date;
     categories: Category[]
 }
 
