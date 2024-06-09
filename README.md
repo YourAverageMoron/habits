@@ -9,10 +9,12 @@
 - [x] fix mobile styling on main page
 - [x] fix utc time errors
 - [x] add a list of entries with the ability to modify or delete them
-- [ ] fix the server side rendering issues
+- [x] fix the server side rendering issues
 - [ ] implement updating events
 - [ ] on line chart green dots when no event that day
 - [ ] info button on cards
+- [ ] fuzzy finder on event tags when creating events
+- [ ] Investigate previous events page not showing everything bug
 
 
 ## Ideas
