@@ -1,24 +1,17 @@
-export type CategoryValueAverage = {
-    category_value: string;
-    category_id: number,
-    count: number;
-    time: number;
-    intensity: number;
-    intensity_time: number;
+import { Metrics } from "./metrics";
+
+export interface CategoryValueAverage extends Metrics {
+    category_value: string
+    category_id: number
 }
 
 
-export type DailyTotal = {
+export interface DailyTotal extends Metrics {
     date: string,
-    count: number;
-    time: number;
-    intensity: number;
-    intensity_time: number;
+
 }
 
 
-export type HourOfDayAverages = {
+export interface HourOfDayAverages extends Metrics {
     hour: number,
-    count: number,
-    // average: string,
 }

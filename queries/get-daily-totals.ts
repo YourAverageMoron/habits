@@ -1,7 +1,7 @@
 import { DailyTotal } from "@/types/dashbard-data";
 import { INTENSITY_TIME_WEIGHT } from "@/types/metrics";
 import { createClient } from "@/utils/supabase/client";
-import { addDays, format } from "date-fns";
+import { addDays, differenceInDays, format } from "date-fns";
 
 
 function timeInMin(time: string): number {
@@ -10,7 +10,8 @@ function timeInMin(time: string): number {
 }
 
 export default async function getDailyTotals(startDate: Date, endDate: Date): Promise<DailyTotal[]> {
-    const n = 100
+    const n = differenceInDays(endDate, startDate);
+    console.log(n);
     const client = createClient();
     let { data, error } = await client
         .rpc('daily_totals', {

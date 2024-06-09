@@ -7,7 +7,7 @@ import { DonutChart, Legend, MultiSelect, MultiSelectItem, Select, SelectItem } 
 import { useState } from "react";
 import DashboardCard from "../DashboardCard";
 import { Category } from "@/types/tags";
-import { Metrics, MetricsKeys } from "@/types/metrics";
+import { MetricsMetadata, MetricNameKeys } from "@/types/metrics";
 
 
 type CategoryDistributionPieChartProps = {
@@ -24,7 +24,7 @@ function filterData(data: CategoryValueAverage[], selectedCategories: Set<string
 
 export default function(props: CategoryDistributionPieChartProps) {
     const [selectedCategories, setSelectedCategories] = useState<Set<string>>(new Set());
-    const [selectedMetric, setSelectedMetric] = useState<MetricsKeys>("count");
+    const [selectedMetric, setSelectedMetric] = useState<MetricNameKeys>("count");
     const queryResult = useQuery({
         queryKey: ['category-value-averages', props.startDate, props.endDate],
         queryFn: () => getCategoryValueAverages(props.startDate, props.endDate)
@@ -37,8 +37,8 @@ export default function(props: CategoryDistributionPieChartProps) {
                     {props.categories.map(c => <MultiSelectItem value={c.id.toString()}>{c.name}</MultiSelectItem>
                     )}
                 </MultiSelect>
-                <Select value={selectedMetric} onValueChange={v => setSelectedMetric(v)}>
-                    {Object.keys(Metrics).map(m => <SelectItem value={m}>{Metrics[m]}</SelectItem>
+                <Select value={selectedMetric} onValueChange={v => setSelectedMetric(v as MetricNameKeys)}>
+                    {Object.keys(MetricsMetadata).map(m => <SelectItem value={m}>{MetricsMetadata[m as MetricNameKeys].name}</SelectItem>
                     )}
                 </Select>
             </div>

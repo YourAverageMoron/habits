@@ -8,7 +8,7 @@ type DashboardSummaryProps = {
     categories: Category[]
 }
 
-export default async function(props: DashboardSummaryProps) {
+export default function(props: DashboardSummaryProps) {
     return <div className="grid gap-3 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mt-3">
         <DailyTotalLineCard categories={props.categories} startDate={props.startDate} endDate={props.endDate} />
         <HoursOfDayBarCard categories={props.categories} startDate={props.startDate} endDate={props.endDate} />

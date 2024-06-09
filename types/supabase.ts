@@ -162,12 +162,16 @@ export type Database = {
       }
       hour_of_day: {
         Args: {
-          n: unknown
+          start_date: string
+          end_date: string
+          intensity_time_weight: number
         }
         Returns: {
           hour: number
           count: number
-          average: string
+          time: string
+          intensity: number
+          intensity_time: string
         }[]
       }
     }

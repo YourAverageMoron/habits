@@ -6,6 +6,7 @@ import { Category } from "@/types/tags";
 import { LineChart } from "@tremor/react";
 import { useQuery } from "@tanstack/react-query";
 import getDailyTotals from "@/queries/get-daily-totals";
+import { MetricsMetadata } from "@/types/metrics";
 
 
 type DailyTotalLineCardProps = {
@@ -21,6 +22,8 @@ export default function(props: DailyTotalLineCardProps) {
         queryKey: ["daily-totals", props.startDate, props.endDate],
         queryFn: () => getDailyTotals(props.startDate, props.endDate)
     });
+
+    const metrics = Object.values(MetricsMetadata);
     function content(d: DailyTotal[]) {
         return (<>
             <LineChart
@@ -28,8 +31,8 @@ export default function(props: DailyTotalLineCardProps) {
                 curveType="monotone"
                 data={d}
                 index="date"
-                categories={['time', 'count', 'intensity', 'intensity_time']}
-                colors={['fuchsia', 'cyan', 'amber', 'emerald']} // TODO: MAKE THESE AND THE CATEGORIES LINKED MAYBE HAVE A MAP OR SOMETHING
+                categories={metrics.map(m => m.name)}
+                colors={metrics.map(m => m.color)}
                 // valueFormatter={(value: number) => `${value} mins`}
                 connectNulls={true}
             // rotateLabelX={{ angle: 90, xAxisHeight: 100, verticalShift: 50 }}

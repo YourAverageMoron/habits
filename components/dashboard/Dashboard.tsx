@@ -1,35 +1,31 @@
-import { createClient } from "@/utils/supabase/server";
-import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@tremor/react";
-import { cookies } from "next/headers";
+"use client"
+import { DateRangePicker, Tab, TabGroup, TabList, TabPanel, TabPanels } from "@tremor/react";
 import React from "react";
 import DashboardSummary from "./DashboardSummary";
 import DashboardCategories from "./DashboardCategories";
-import { SupabaseClient } from "@supabase/supabase-js";
-import { Database } from "@/types/supabase";
+import { useQuery } from "@tanstack/react-query";
+import getCategories from "@/queries/get-categories";
 
 
-async function getCategories(client: SupabaseClient<Database>) {
-    const { data, error } = await client.from("event_tag_categories")
-        .select("id, name")
+export default function() {
+    const categoriesQueryResult = useQuery({
+        queryKey: ['categores'],
+        queryFn: getCategories,
+    });
+    const categories = categoriesQueryResult.data || [];
 
-    if (error || !data) {
-        return []
-    }
-    return data;
-}
-
-
-export default async function() {
-    const cookieStore = cookies();
-    const supabase = createClient(cookieStore);
-    const categories = await getCategories(supabase);
 
     // TODO: THERE SHOULD BE A FILTER THAT SELECTS THESE
-    const startDate = new Date(0);
+    const startDate = new Date();
+    startDate.setDate(startDate.getDate() - 10);
     const endDate = new Date();
 
     // NOTE: HARDCODED FUCHSIA AS THERE IS A BUG IN TREMOR https://github.com/tremorlabs/tremor/issues/1071
     return <div className="sm:px-0.5 md:px-6 mt-6">
+        <div className="flex">
+            <DateRangePicker className="mx-auto max-w-md" />
+
+        </div>
         <TabGroup className="w-full">
             <TabList color={'fuchsia'} variant="line" defaultValue="1">
                 <Tab value="1">Summary</Tab>
