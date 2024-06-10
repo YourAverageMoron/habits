@@ -1,13 +1,8 @@
 import { HourOfDayAverages as HoursOfDayAverages } from "@/types/dashbard-data";
 import { INTENSITY_TIME_WEIGHT } from "@/types/metrics";
 import { createClient } from "@/utils/supabase/client";
+import { timeInMin } from "@/utils/supabase/metric-utils";
 
-
-// TODO: MOVE THIS TO A UTILS FUNCTION
-function timeInMin(time: string): number {
-    let splitTime = time.split(':');
-    return (Number(splitTime[0]) * 60) + Number(splitTime[1]) + (Number(splitTime[2]) / 60)
-}
 
 export default async function getHoursOfDayAverages(startDate: Date, endDate: Date): Promise<HoursOfDayAverages[]> {
     const client = createClient();

@@ -1,11 +1,10 @@
 "use client"
-import { DateRangePicker, Tab, TabGroup, TabList, TabPanel, TabPanels } from "@tremor/react";
-import React from "react";
+import { DateRangePicker, DateRangePickerValue, Tab, TabGroup, TabList, TabPanel, TabPanels } from "@tremor/react";
+import React, { useState } from "react";
 import DashboardSummary from "./DashboardSummary";
 import DashboardCategories from "./DashboardCategories";
 import { useQuery } from "@tanstack/react-query";
 import getCategories from "@/queries/get-categories";
-
 
 export default function() {
     const categoriesQueryResult = useQuery({
@@ -13,17 +12,16 @@ export default function() {
         queryFn: getCategories,
     });
     const categories = categoriesQueryResult.data || [];
+    const [dates, setDates] = useState<DateRangePickerValue>();
+    console.log(dates);
 
-
-    // TODO: THERE SHOULD BE A FILTER THAT SELECTS THESE
-    const startDate = new Date();
-    startDate.setDate(startDate.getDate() - 10);
-    const endDate = new Date();
+    const startDate = dates?.from || new Date(1);
+    const endDate = dates?.to || new Date();
 
     // NOTE: HARDCODED FUCHSIA AS THERE IS A BUG IN TREMOR https://github.com/tremorlabs/tremor/issues/1071
     return <div className="sm:px-0.5 md:px-6 mt-6">
         <div className="flex">
-            <DateRangePicker className="mx-auto max-w-md" />
+            <DateRangePicker value={dates} onValueChange={v => setDates(v)} className="mx-auto max-w-md" />
 
         </div>
         <TabGroup className="w-full">

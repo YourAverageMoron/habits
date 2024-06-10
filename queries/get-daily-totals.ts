@@ -1,15 +1,13 @@
 import { DailyTotal } from "@/types/dashbard-data";
 import { INTENSITY_TIME_WEIGHT } from "@/types/metrics";
 import { createClient } from "@/utils/supabase/client";
+import { timeInMin } from "@/utils/supabase/metric-utils";
 import { addDays, differenceInDays, format } from "date-fns";
 
 
-function timeInMin(time: string): number {
-    let splitTime = time.split(':');
-    return (Number(splitTime[0]) * 60) + Number(splitTime[1]) + (Number(splitTime[2]) / 60)
-}
-
 export default async function getDailyTotals(startDate: Date, endDate: Date): Promise<DailyTotal[]> {
+
+    // TODO: THIS SHOULD FILL IN THE GAPS BETWEEN FIRST RESPONSE IN DATA AND END DATE
     const n = differenceInDays(endDate, startDate);
     console.log(n);
     const client = createClient();
