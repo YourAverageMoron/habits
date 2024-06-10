@@ -1,5 +1,6 @@
 import { GeistSans } from 'geist/font/sans'
 import './globals.css'
+import { CustomQueryClientProvider } from '@/components/CustomQueryClientProvider'
 
 const defaultUrl = process.env.VERCEL_URL
     ? `https://${process.env.VERCEL_URL}`
@@ -20,12 +21,14 @@ export default function RootLayout({
     children: React.ReactNode
 }) {
     return (
-        <html lang="en" className={GeistSans.className}>
-            <body className="bg-tremor-background dark:bg-dark-tremor-background text-tremor-content dark:text-dark-tremor-content">
-                <main className="">
-                    {children}
-                </main>
-            </body>
-        </html>
+        <CustomQueryClientProvider>
+            <html lang="en" className={GeistSans.className}>
+                <body className="bg-tremor-background dark:bg-dark-tremor-background text-tremor-content dark:text-dark-tremor-content">
+                    <main className="">
+                        {children}
+                    </main>
+                </body>
+            </html>
+        </CustomQueryClientProvider>
     )
 }

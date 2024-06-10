@@ -7,7 +7,6 @@ import { EventsList } from "@/components/EventsList";
 
 
 // TODO:
-// PAGENTATE DATA PULL FROM SUPABASE -> CREATE AN INFINATE SCROLL
 // DELETE and UPDATE buttons 
 export default async function CreateEvent() {
     const cookieStore = cookies();

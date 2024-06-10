@@ -10,10 +10,11 @@ import { createClient } from "@/utils/supabase/client";
 import { timeValidation } from "./TimeInput";
 import assert from "assert";
 import { useRouter } from "next/navigation";
+import { CreateEventCategories, CreateEventTags } from "@/types/categories";
 
 
 type CreateEventProps = {
-    categories: Categories
+    categories: CreateEventCategories
 }
 
 
@@ -24,7 +25,7 @@ export default function CreateEventComponent(props: CreateEventProps) {
     const [startTime, setStartTime] = useState<string>(format(addMinutes(startDate ? startDate : new Date(), -5), "HH:mm"));
     const [endTime, setEndTime] = useState<string>(format(startDate ? startDate : new Date(), "HH:mm"));
     const [intensity, setIntensity] = useState<number>(1);
-    const [tagsCategories, setTagsCategories] = useState<Categories>(props.categories || {});
+    const [tagsCategories, setTagsCategories] = useState<CreateEventCategories>(props.categories || {});
     const [journalValue, setJournalValue] = useState<string>("");
     const router = useRouter()
     const calculateProgress = (pages: any[]) => {
@@ -47,7 +48,7 @@ export default function CreateEventComponent(props: CreateEventProps) {
             endDateTime: endDateTime,
         }
     }
-    const updateTagCategories = (categoryId: number, value: Tags) => {
+    const updateTagCategories = (categoryId: number, value: CreateEventTags) => {
         let newCategories = { ...tagsCategories };
         newCategories[categoryId].tags = value;
         setTagsCategories(newCategories);

@@ -122,6 +122,35 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      category_averages: {
+        Args: {
+          start_date: string
+          end_date: string
+          intensity_time_weight: number
+        }
+        Returns: {
+          category_value: string
+          category_id: number
+          count: number
+          time: string
+          intensity: number
+          intensity_time: string
+        }[]
+      }
+      daily_totals: {
+        Args: {
+          start_date: string
+          end_date: string
+          intensity_time_weight: number
+        }
+        Returns: {
+          date: string
+          count: number
+          time: string
+          intensity: number
+          intensity_time: string
+        }[]
+      }
       get_tag_values: {
         Args: {
           categories: number[]
@@ -131,14 +160,18 @@ export type Database = {
           value: string
         }[]
       }
-      total_time_over_days: {
+      hour_of_day: {
         Args: {
-          n: unknown
+          start_date: string
+          end_date: string
+          intensity_time_weight: number
         }
         Returns: {
-          start_date: string
+          hour: number
           count: number
-          sum: string
+          time: string
+          intensity: number
+          intensity_time: string
         }[]
       }
     }

@@ -12,6 +12,7 @@
 - [x] fix the server side rendering issues
 - [ ] implement updating events
 - [ ] on line chart green dots when no event that day
+- [ ] info button on cards
 - [ ] fuzzy finder on event tags when creating events
 - [ ] Investigate previous events page not showing everything bug
 
