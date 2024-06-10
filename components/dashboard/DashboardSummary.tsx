@@ -1,5 +1,5 @@
 import DailyTotalLineCard from "./cards/DailyTotalLineCard";
-import { Category } from "@/types/tags";
+import { Category } from "@/types/categories";
 import HoursOfDayBarCard from "./cards/HoursOfDayBarCard";
 import { MultiSelect, MultiSelectItem } from "@tremor/react";
 import { useState } from "react";

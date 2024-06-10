@@ -6,7 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import { DonutChart, Legend, MultiSelect, MultiSelectItem, Select, SelectItem } from "@tremor/react";
 import { useState } from "react";
 import DashboardCard from "../DashboardCard";
-import { Category } from "@/types/tags";
+import { Category } from "@/types/categories";
 import { MetricsMetadata, MetricNameKeys } from "@/types/metrics";
 
 

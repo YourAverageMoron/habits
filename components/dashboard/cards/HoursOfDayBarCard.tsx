@@ -2,7 +2,7 @@
 
 import { HourOfDayAverages } from "@/types/dashbard-data";
 import DashboardCard from "../DashboardCard";
-import { Category } from "@/types/tags";
+import { Category } from "@/types/categories";
 import { BarChart } from "@tremor/react";
 import { useQuery } from "@tanstack/react-query";
 import getHoursOfDayAverages from "@/queries/get-hours-of-day-averages";

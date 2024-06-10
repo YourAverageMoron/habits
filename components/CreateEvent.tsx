@@ -10,11 +10,11 @@ import { createClient } from "@/utils/supabase/client";
 import { timeValidation } from "./TimeInput";
 import assert from "assert";
 import { useRouter } from "next/navigation";
-import { CreateEventCategories, CreateEventCategory, CreateEventTags } from "@/types/tags";
+import { CreateEventCategories, CreateEventTags } from "@/types/categories";
 
 
 type CreateEventProps = {
-    categories: CreateEventCategories 
+    categories: CreateEventCategories
 }
 
 

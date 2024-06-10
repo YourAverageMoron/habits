@@ -1,4 +1,4 @@
-import { CreateEventTags } from "@/types/tags";
+import { CreateEventTags } from "@/types/categories";
 import { Button, TextInput } from "@tremor/react";
 import { useEffect, useState } from "react";
 

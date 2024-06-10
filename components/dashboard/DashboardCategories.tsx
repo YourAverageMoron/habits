@@ -1,4 +1,4 @@
-import { Category } from "@/types/tags";
+import { Category } from "@/types/categories";
 import CategoryDistributionPieCard from "./cards/CategoryDistributionPieCard";
 
 

@@ -2,7 +2,7 @@
 
 import { DailyTotal } from "@/types/dashbard-data";
 import DashboardCard from "../DashboardCard";
-import { Category } from "@/types/tags";
+import { Category } from "@/types/categories";
 import { LineChart } from "@tremor/react";
 import { useQuery } from "@tanstack/react-query";
 import getDailyTotals from "@/queries/get-daily-totals";

@@ -6,7 +6,7 @@ import { isLoggedIn } from "@/utils/supabase/checkLogin";
 import CreateEventComponent from "@/components/CreateEvent";
 import { redirect } from "next/navigation";
 import Nav from "@/components/Nav";
-import { CreateEventCategories } from "@/types/tags";
+import { CreateEventCategories } from "@/types/categories";
 
 
 async function createEventCategories(supabase: SupabaseClient<Database>) {
