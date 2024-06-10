@@ -6,10 +6,6 @@ import { addDays, differenceInDays, format } from "date-fns";
 
 
 export default async function getDailyTotals(startDate: Date, endDate: Date): Promise<DailyTotal[]> {
-
-    // TODO: THIS SHOULD FILL IN THE GAPS BETWEEN FIRST RESPONSE IN DATA AND END DATE
-    const n = differenceInDays(endDate, startDate);
-    console.log(n);
     const client = createClient();
     let { data, error } = await client
         .rpc('daily_totals', {
@@ -20,6 +16,13 @@ export default async function getDailyTotals(startDate: Date, endDate: Date): Pr
     if (!data || error) {
         //TODO: MAKE THIS BETTER
         throw Error("TODO: MAKE THIS BETTER");
+    }
+
+    let n = differenceInDays(endDate, startDate);
+    if (n > 100) {
+        const date = new Date(data[0].date || startDate);
+        date.setDate(date.getDate() - 5);
+        n = differenceInDays(endDate, date);
     }
     const dataJson: { [key: string]: DailyTotal } = {}
     data?.forEach(d => {

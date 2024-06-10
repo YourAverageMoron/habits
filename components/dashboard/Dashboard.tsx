@@ -6,14 +6,23 @@ import DashboardCategories from "./DashboardCategories";
 import { useQuery } from "@tanstack/react-query";
 import getCategories from "@/queries/get-categories";
 
+
+function getInitialFromDate(): Date {
+    let d = new Date()
+    d = new Date(d.setDate(d.getDate() - 101))
+    return d
+}
+
 export default function() {
     const categoriesQueryResult = useQuery({
         queryKey: ['categores'],
         queryFn: getCategories,
     });
     const categories = categoriesQueryResult.data || [];
-    const [dates, setDates] = useState<DateRangePickerValue>();
-    console.log(dates);
+    const [dates, setDates] = useState<DateRangePickerValue>({
+        from: getInitialFromDate(),
+        to: new Date(),
+    });
 
     const startDate = dates?.from || new Date(1);
     const endDate = dates?.to || new Date();
