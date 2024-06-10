@@ -6,14 +6,14 @@ import { Category } from "@/types/tags";
 import { LineChart } from "@tremor/react";
 import { useQuery } from "@tanstack/react-query";
 import getDailyTotals from "@/queries/get-daily-totals";
-import { MetricsMetadata } from "@/types/metrics";
+import { MetricNameKeys, MetricsMetadata } from "@/types/metrics";
 
 
 type DailyTotalLineCardProps = {
     startDate: Date,
     endDate: Date,
     categories: Category[]
-
+    metrics: Set<MetricNameKeys>
 }
 
 export default function(props: DailyTotalLineCardProps) {
@@ -23,7 +23,7 @@ export default function(props: DailyTotalLineCardProps) {
         queryFn: () => getDailyTotals(props.startDate, props.endDate)
     });
 
-    const metrics = Object.values(MetricsMetadata);
+    const metrics = Object.entries(MetricsMetadata).filter(v => props.metrics.has(v[0] as MetricNameKeys)).map(v => v[1]);
     function content(d: DailyTotal[]) {
         return (<>
             <LineChart

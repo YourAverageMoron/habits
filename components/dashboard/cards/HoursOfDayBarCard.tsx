@@ -6,14 +6,14 @@ import { Category } from "@/types/tags";
 import { BarChart } from "@tremor/react";
 import { useQuery } from "@tanstack/react-query";
 import getHoursOfDayAverages from "@/queries/get-hours-of-day-averages";
-import { MetricsMetadata } from "@/types/metrics";
+import { MetricNameKeys, MetricsMetadata } from "@/types/metrics";
 
 
 type HoursOfDayBarCardProps = {
     startDate: Date,
     endDate: Date,
     categories: Category[]
-
+    metrics: Set<MetricNameKeys>
 }
 
 export default function(props: HoursOfDayBarCardProps) {
@@ -23,7 +23,7 @@ export default function(props: HoursOfDayBarCardProps) {
         queryFn: () => getHoursOfDayAverages(props.startDate, props.endDate)
     });
 
-    const metrics = Object.values(MetricsMetadata);
+    const metrics = Object.entries(MetricsMetadata).filter(v => props.metrics.has(v[0] as MetricNameKeys)).map(v => v[1]);
     function content(d: HourOfDayAverages[]) {
         return (<>
             <BarChart

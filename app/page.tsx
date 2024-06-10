@@ -12,7 +12,6 @@ export default async function Index() {
     const supabase = createClient(cookieStore);
     await isLoggedIn(supabase)
 
-    // TODO: We can probably move the dashboard up to this level
     return (
         <main className="min-h-screen">
             <Nav />

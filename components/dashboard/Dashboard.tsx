@@ -1,5 +1,5 @@
 "use client"
-import { DateRangePicker, DateRangePickerValue, Tab, TabGroup, TabList, TabPanel, TabPanels } from "@tremor/react";
+import { DateRangePicker, DateRangePickerValue, MultiSelect, MultiSelectItem, Tab, TabGroup, TabList, TabPanel, TabPanels } from "@tremor/react";
 import React, { useState } from "react";
 import DashboardSummary from "./DashboardSummary";
 import DashboardCategories from "./DashboardCategories";
@@ -29,10 +29,7 @@ export default function() {
 
     // NOTE: HARDCODED FUCHSIA AS THERE IS A BUG IN TREMOR https://github.com/tremorlabs/tremor/issues/1071
     return <div className="sm:px-0.5 md:px-6 mt-6">
-        <div className="flex">
-            <DateRangePicker value={dates} onValueChange={v => setDates(v)} className="mx-auto max-w-md" />
-
-        </div>
+        <DateRangePicker value={dates} onValueChange={v => setDates(v)} className="mx-auto max-w-md" />
         <TabGroup className="w-full">
             <TabList color={'fuchsia'} variant="line" defaultValue="1">
                 <Tab value="1">Summary</Tab>
