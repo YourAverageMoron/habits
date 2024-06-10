@@ -6,8 +6,8 @@ import { isLoggedIn } from "@/utils/supabase/checkLogin";
 import CreateEventComponent from "@/components/CreateEvent";
 import { redirect } from "next/navigation";
 import Nav from "@/components/Nav";
+import { CreateEventCategories } from "@/types/tags";
 
-export const revalidate = 0;
 
 async function createEventCategories(supabase: SupabaseClient<Database>) {
     let categories = await supabase
@@ -22,7 +22,7 @@ async function createEventCategories(supabase: SupabaseClient<Database>) {
     let tags = await supabase.rpc('get_tag_values', {
         categories: categories.data.map(category => category.id)
     })
-    const categoriesMap: Categories = categories.data.reduce((acc: Categories, cur) => {
+    const categoriesMap: CreateEventCategories  = categories.data.reduce((acc: CreateEventCategories, cur) => {
         return {
             ...acc, ...{
                 [cur.id]: {

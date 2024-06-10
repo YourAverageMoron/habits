@@ -1,20 +1,21 @@
+import { CreateEventTags } from "@/types/tags";
 import { Button, TextInput } from "@tremor/react";
 import { useEffect, useState } from "react";
 
 type TypeGridProps = {
     title: string;
-    value: Tags;
-    onValueChange: ((value: Tags) => void);
+    value: CreateEventTags;
+    onValueChange: ((value: CreateEventTags) => void);
 };
 
 
-export const getSelectedTags = (tags: Tags): string[] => Object.keys(tags).filter(key => tags[key].selected);
+export const getSelectedTags = (tags: CreateEventTags): string[] => Object.keys(tags).filter(key => tags[key].selected);
 
 
 export function TagsGrid(props: TypeGridProps) {
 
     const [newTag, setNewTag] = useState<string>("");
-    const [tags, setTags] = useState<Tags>(props.value);
+    const [tags, setTags] = useState<CreateEventTags>(props.value);
 
     useEffect(() => props.onValueChange(tags), [tags]);
 
