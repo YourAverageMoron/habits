@@ -3,7 +3,7 @@ import { Button, Flex, ProgressBar } from "@tremor/react";
 import EventDateTimeAndIntensity from "./EventDateTimeAndIntensity";
 import { RiArrowLeftLine, RiArrowRightLine, RiCheckLine, } from "@remixicon/react";
 import { useState } from "react";
-import { addMinutes, format } from "date-fns";
+import { addDays, addMinutes, format } from "date-fns";
 import { TagsGrid } from "./TagsGrid";
 import Journal from "./Journal";
 import { createClient } from "@/utils/supabase/client";
@@ -40,8 +40,12 @@ export default function CreateEventComponent(props: CreateEventProps) {
         const endSplit = endTime.split(':');
         const startDateTime = new Date(startDate.getTime());;
         startDateTime.setHours(parseInt(startSplit[0]), parseInt(startSplit[1]), 0, 0);
-        const endDateTime = new Date(startDate.getTime());;
+        let endDateTime = new Date(startDate.getTime());;
         endDateTime.setHours(parseInt(endSplit[0]), parseInt(endSplit[1]), 0, 0);
+
+        if (endDateTime < startDateTime) {
+            endDateTime = addDays(endDateTime, 1);
+        }
 
         return {
             startDateTime: startDateTime,
