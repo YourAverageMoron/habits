@@ -8,7 +8,6 @@ export interface CategoryValueAverage extends Metrics {
 
 export interface DailyTotal extends Metrics {
     date: string,
-
 }
 
 

@@ -15,10 +15,10 @@ type MetricMetadata = {
 export type MetricNameKeys = keyof Metrics;
 
 export const MetricsMetadata: { [key in MetricNameKeys]: MetricMetadata } = {
-    count: { name: "count", color: 'cyan' },
+    count: { name: "count", color: 'blue' },
     time: { name: "time", color: 'fuchsia' },
-    intensity: { name: "intensity", color: 'amber' },
-    intensity_time: { name: "intensity_time", color: 'emerald' },
+    intensity: { name: "intensity", color: 'orange' },
+    intensity_time: { name: "intensity_time", color: 'red' },
 } as const;
 
 
